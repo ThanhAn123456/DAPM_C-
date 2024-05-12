@@ -1,3 +1,6 @@
+using DAPM_C_.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace DAPM_C_
 {
     public class Program
@@ -8,7 +11,8 @@ namespace DAPM_C_
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddDbContext<QuanlyphanphoikhoYodyContext>(options => options.UseSqlServer(
+                builder.Configuration.GetConnectionString("QuanLyPhanPhoiKhoYodyConnection")));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
