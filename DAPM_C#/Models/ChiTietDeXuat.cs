@@ -7,11 +7,9 @@ public partial class ChiTietDeXuat
 {
     public int MaDeXuat { get; set; }
 
-    public int? MaCuaHang { get; set; }
-
-    public int MaSanPham { get; set; }
-
     public int MaChiTietSanPham { get; set; }
+
+    public int? MaCuaHang { get; set; }
 
     public string? LyDoDeXuat { get; set; }
 
@@ -25,7 +23,7 @@ public partial class ChiTietDeXuat
 
     public string? XacNhanNhanHang { get; set; }
 
-    public virtual ChiTietSanPham ChiTietSanPham { get; set; } = null!;
+    public virtual ChiTietSanPham MaChiTietSanPhamNavigation { get; set; } = null!;
 
     public virtual CuaHang? MaCuaHangNavigation { get; set; }
 
