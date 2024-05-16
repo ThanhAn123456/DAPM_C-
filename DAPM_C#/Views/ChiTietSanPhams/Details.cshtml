@@ -1,0 +1,79 @@
+﻿@model DAPM_C_.Models.ChiTietSanPham
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ChiTietSanPham</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.SoLuong)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.SoLuong)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.HinhAnh)
+        </dt>
+        <dd class = "col-sm-9">
+            <img src="~/hinhanhs/@Model.HinhAnh" alt="HinhAnh" style="max-width: 200px; max-height: 200px;" />
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.Nsx)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.Nsx)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.ChatLieu)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.ChatLieu)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.GiaTien)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.GiaTien)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.MaDoiTuongNavigation)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.MaDoiTuongNavigation.TenDoiTuong)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.MaLoaiSanPhamNavigation)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.MaLoaiSanPhamNavigation.TenLoaiSanPham)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.MaMauNavigation)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.MaMauNavigation.TenMau)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.MaSanPhamNavigation)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.MaSanPhamNavigation.TenSanPham)
+        </dd>
+        <dt class = "col-sm-3">
+            @Html.DisplayNameFor(model => model.MaSizeNavigation)
+        </dt>
+        <dd class = "col-sm-9">
+            @Html.DisplayFor(model => model.MaSizeNavigation.TenSize)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.MaChiTietSanPham" class="btn btn-outline-info">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
