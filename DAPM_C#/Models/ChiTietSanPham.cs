@@ -5,15 +5,7 @@ namespace DAPM_C_.Models;
 
 public partial class ChiTietSanPham
 {
-    public int MaSanPham { get; set; }
-
     public int MaChiTietSanPham { get; set; }
-
-    public int? MaLoaiSanPham { get; set; }
-
-    public int? MaMau { get; set; }
-
-    public int? MaSize { get; set; }
 
     public int? SoLuong { get; set; }
 
@@ -21,11 +13,19 @@ public partial class ChiTietSanPham
 
     public string? Nsx { get; set; }
 
-    public int? MaDoiTuong { get; set; }
-
     public string? ChatLieu { get; set; }
 
     public int? GiaTien { get; set; }
+
+    public int? MaSanPham { get; set; }
+
+    public int? MaLoaiSanPham { get; set; }
+
+    public int? MaMau { get; set; }
+
+    public int? MaSize { get; set; }
+
+    public int? MaDoiTuong { get; set; }
 
     public virtual ICollection<ChiTietDeXuat> ChiTietDeXuats { get; set; } = new List<ChiTietDeXuat>();
 
@@ -37,7 +37,7 @@ public partial class ChiTietSanPham
 
     public virtual Mau? MaMauNavigation { get; set; }
 
-    public virtual Sanpham MaSanPhamNavigation { get; set; } = null!;
+    public virtual Sanpham? MaSanPhamNavigation { get; set; }
 
     public virtual Size? MaSizeNavigation { get; set; }
 }
