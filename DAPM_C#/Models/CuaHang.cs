@@ -11,7 +11,7 @@ public partial class CuaHang
 
     public string? DiaChi { get; set; }
 
-    public virtual ICollection<ChiTietDeXuat> ChiTietDeXuats { get; set; } = new List<ChiTietDeXuat>();
+    public virtual ICollection<DeXuat> DeXuats { get; set; } = new List<DeXuat>();
 
     public virtual ICollection<TaiKhoan> TaiKhoans { get; set; } = new List<TaiKhoan>();
 }

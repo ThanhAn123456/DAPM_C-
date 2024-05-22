@@ -1,0 +1,45 @@
+﻿@model DAPM_C_.Models.ChiTietDeXuat
+
+@{
+    ViewData["Title"] = "AddChiTiet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add ChiTiet</h2>
+
+<h4>ChiTietDeXuat</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddChiTiet" id="chiTietDeXuatForm">
+            <input asp-for="MaDeXuat" value="@ViewBag.MaDeXuat" id="maDeXuat" />
+            <a class="submenu-link" asp-route-madexuat="@ViewBag.MaDeXuat" asp-controller="ChiTietSanPhams" asp-action="SelectProduct">Chọn sản phẩm</a>  
+            <div class="form-group">
+                <label asp-for="MaChiTietSanPham" class="control-label"></label>
+                <input asp-for="MaChiTietSanPham" id="maChiTietSanPham" class="form-control" value="@ViewBag.SelectedProductId" readonly="readonly" />
+                <span id="error-message" class="text-danger" style="display:none;">Mã Chi Tiết Sản Phẩm đã tồn tại. Vui lòng nhập lại.</span>
+            </div>                       
+            <div class="form-group">
+                <label asp-for="LyDoDeXuat" class="control-label"></label>
+                <input asp-for="LyDoDeXuat" class="form-control" />
+                <span asp-validation-for="LyDoDeXuat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoLuongDeXuat" class="control-label"></label>
+                <input asp-for="SoLuongDeXuat" class="form-control" />
+                <span asp-validation-for="SoLuongDeXuat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="AddChiTiet" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details" asp-route-id="@ViewBag.MaDeXuat">Back to Details</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

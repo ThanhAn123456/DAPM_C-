@@ -11,5 +11,9 @@ public partial class DeXuat
 
     public DateTime? NgayDeXuat { get; set; }
 
+    public int? MaCuaHang { get; set; }
+
     public virtual ICollection<ChiTietDeXuat> ChiTietDeXuats { get; set; } = new List<ChiTietDeXuat>();
+
+    public virtual CuaHang? MaCuaHangNavigation { get; set; }
 }

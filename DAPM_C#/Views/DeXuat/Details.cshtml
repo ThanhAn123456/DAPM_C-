@@ -1,0 +1,80 @@
+﻿@model DAPM_C_.Models.DeXuat
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DeXuat</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tieude)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Tieude)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NgayDeXuat)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NgayDeXuat)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a href="@Url.Action("AddChiTiet", new { id = Model.MaDeXuat })">Add ChiTietDeXuat</a>
+</div>
+
+<h4>ChiTietDeXuats</h4>
+@if (ViewBag.errorMSG != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.errorMSG
+    </div>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Tên sản phẩm
+            </th>          
+            <th>
+                @Html.DisplayNameFor(model => model.ChiTietDeXuats.First().SoLuongDeXuat)
+            </th>
+            <th>
+                Lý do đề xuất
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ChiTietDeXuats)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaChiTietSanPhamNavigation.MaSanPhamNavigation.TenSanPham)
+                </td>            
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoLuongDeXuat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LyDoDeXuat)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MaChiTietSanPham" class="btn btn-outline-primary">Edit</a>                 
+                    <a asp-action="Delete" asp-route-id="@item.MaChiTietSanPham" class="btn btn-outline-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

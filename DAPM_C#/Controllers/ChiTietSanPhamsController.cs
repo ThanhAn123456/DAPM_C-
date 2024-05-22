@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAPM_C_.Models;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 
 namespace DAPM_C_.Controllers
 {
@@ -28,6 +30,20 @@ namespace DAPM_C_.Controllers
             return View(await quanlyphanphoikhoYodyContext.ToListAsync());
         }
 
+        public IActionResult SelectProduct()
+        {
+            return View(_context.ChiTietSanPhams.ToList());
+        }
+        [HttpPost]
+        public IActionResult SelectProduct(int id)
+        {
+            var mdx = HttpContext.Session.GetInt32("truyenmdx");
+            int ma = Convert.ToInt32(mdx);
+            // Lưu mã sản phẩm được chọn vào Session
+            HttpContext.Session.SetInt32("SelectedProductId", id);        
+            HttpContext.Session.SetInt32("truyenlaiMDX", ma);
+            return RedirectToAction("AddChiTiet", "DeXuat"); // Chuyển hướng về trang tạo đề xuất
+        }
         // GET: ChiTietSanPhams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
