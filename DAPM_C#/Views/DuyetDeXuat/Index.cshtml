@@ -1,0 +1,56 @@
+﻿@model IEnumerable<DAPM_C_.Models.DeXuat>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>DANH SÁCH ĐỀ XUẤT</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Mã đề xuất
+            </th>
+            <th>
+                Tiêu đề
+            </th>
+            <th>
+                Thời gian đề xuất
+            </th>
+            <th>
+                Cửa hàng
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaDeXuat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tieude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayDeXuat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaCuaHangNavigation.TenCuahang)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TrangThai)
+                </td>
+                <td>
+                    <a asp-action="XemChiTietDX" asp-route-id="@item.MaDeXuat" class="btn btn-outline-info">Xem chi tiết</a>
+                    <a asp-action="XoaDeXuat" asp-route-MaDeXuat="@item.MaDeXuat" class="btn btn-outline-danger">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

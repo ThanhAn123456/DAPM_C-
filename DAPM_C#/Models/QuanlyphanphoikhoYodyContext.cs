@@ -51,7 +51,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
     {
         modelBuilder.Entity<ChiTietDeXuat>(entity =>
         {
-            entity.HasKey(e => new { e.MaDeXuat, e.MaChiTietSanPham }).HasName("PK__ChiTietD__384F455E5AF3E69C");
+            entity.HasKey(e => new { e.MaDeXuat, e.MaChiTietSanPham }).HasName("PK__ChiTietD__384F455EB1932616");
 
             entity.ToTable("ChiTietDeXuat");
 
@@ -62,11 +62,11 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
             entity.HasOne(d => d.MaChiTietSanPhamNavigation).WithMany(p => p.ChiTietDeXuats)
                 .HasForeignKey(d => d.MaChiTietSanPham)
-                .HasConstraintName("FK__ChiTietDe__MaChi__7F2BE32F");
+                .HasConstraintName("FK__ChiTietDe__MaChi__19DFD96B");
 
             entity.HasOne(d => d.MaDeXuatNavigation).WithMany(p => p.ChiTietDeXuats)
                 .HasForeignKey(d => d.MaDeXuat)
-                .HasConstraintName("FK__ChiTietDe__MaDeX__7E37BEF6");
+                .HasConstraintName("FK__ChiTietDe__MaDeX__18EBB532");
         });
 
         modelBuilder.Entity<ChiTietPhieuNhap>(entity =>
@@ -136,17 +136,18 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<DeXuat>(entity =>
         {
-            entity.HasKey(e => e.MaDeXuat).HasName("PK__DeXuat__222447659A708782");
+            entity.HasKey(e => e.MaDeXuat).HasName("PK__DeXuat__2224476541528D17");
 
             entity.ToTable("DeXuat");
 
             entity.Property(e => e.NgayDeXuat).HasColumnType("datetime");
             entity.Property(e => e.Tieude).HasMaxLength(100);
+            entity.Property(e => e.TrangThai).HasMaxLength(15);
 
             entity.HasOne(d => d.MaCuaHangNavigation).WithMany(p => p.DeXuats)
                 .HasForeignKey(d => d.MaCuaHang)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__DeXuat__MaCuaHan__7B5B524B");
+                .HasConstraintName("FK__DeXuat__MaCuaHan__160F4887");
         });
 
         modelBuilder.Entity<DoiTuong>(entity =>

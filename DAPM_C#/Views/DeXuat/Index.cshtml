@@ -5,22 +5,28 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>DANH SÁCH ĐỀ XUẤT</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Tạo đề xuất</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Tieude)
+                Mã đề xuất
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NgayDeXuat)
+                Tiêu đề 
+            </th>
+            <th>
+                Thời gian đề xuất
             </th>
             <th>
                 Cửa hàng
+            </th>
+            <th>
+                Trạng thái
             </th>
             <th></th>
         </tr>
@@ -28,6 +34,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaDeXuat)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Tieude)
             </td>
@@ -38,7 +47,11 @@
                 @Html.DisplayFor(modelItem => item.MaCuaHangNavigation.TenCuahang)
             </td>
             <td>
-                <a href="@Url.Action("Details", new { id = item.MaDeXuat })">Details</a>
+                @Html.DisplayFor(modelItem => item.TrangThai)
+            </td>
+            <td>
+                <a asp-action="ChiTietDeXuat" asp-route-id="@item.MaDeXuat" class="btn btn-outline-info">Xem chi tiết</a>
+                 <a asp-action="XoaDeXuat" asp-route-MaDeXuat="@item.MaDeXuat" class="btn btn-outline-danger">Xóa</a>
             </td>
         </tr>
 }

@@ -1,7 +1,7 @@
 ﻿@model DAPM_C_.Models.DeXuat
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "ChiTietDeXuat";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -26,25 +26,15 @@
         </dl>
     </div>
 
-    <div class="mb-4">
-        <a href="@Url.Action("AddChiTiet", new { id = Model.MaDeXuat })" class="btn btn-primary">Thêm chi tiết đề xuất</a>
-    </div>
-
-    <h4 class="mb-3">DANH SÁCH CHI TIẾT ĐỀ XUẤT</h4>
-    @if (ViewBag.errorMSG != null)
-    {
-        <div class="alert alert-danger">
-            @ViewBag.errorMSG
-        </div>
-    }
-
     <table class="table table-striped table-hover">
         <thead class="thead-dark">
             <tr>
                 <th>Tên sản phẩm</th>
-                <th>Số lượng đề xuất</th>
                 <th>Lý do đề xuất</th>
-                <th>Hành động</th>
+                <th>Số lượng đề xuất</th>
+                <th>Số lượng được duyệt</th>
+                <th>Trạng thái duyệt</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -55,14 +45,19 @@
                         @Html.DisplayFor(modelItem => item.MaChiTietSanPhamNavigation.MaSanPhamNavigation.TenSanPham)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.SoLuongDeXuat)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.LyDoDeXuat)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.MaChiTietSanPham" asp-route-maDX="@item.MaDeXuat" class="btn btn-outline-primary btn-sm">Sửa</a>
-                        <a asp-action="Delete" asp-route-MaDeXuat="@item.MaDeXuat" asp-route-MaChiTietSanPham="@item.MaChiTietSanPham" class="btn btn-outline-danger btn-sm">Xóa</a>
+                        @Html.DisplayFor(modelItem => item.SoLuongDeXuat)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SoLuongDuyet)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrangThaiDeXuat)
+                    </td>
+                    <td>
+                        <a asp-action="DetailsCTDX" asp-route-MaDeXuat="@item.MaDeXuat" asp-route-MaChiTietSanPham="@item.MaChiTietSanPham" class="btn btn-primary btn-sm">Xem chi tiết</a>
                     </td>
                 </tr>
             }
@@ -73,3 +68,9 @@
         <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

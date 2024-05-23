@@ -32,7 +32,9 @@ namespace DAPM_C_.Controllers
 
         public IActionResult SelectProduct()
         {
-            return View(_context.ChiTietSanPhams.ToList());
+            var ListSanPham = _context.ChiTietSanPhams.Include(s => s.MaSanPhamNavigation).Include(s => s.MaSizeNavigation).Include(m => m.MaMauNavigation)
+                                                        .Include(l => l.MaLoaiSanPhamNavigation).Include(d => d.MaDoiTuongNavigation).ToList();
+            return View(ListSanPham);
         }
         [HttpPost]
         public IActionResult SelectProduct(int id)

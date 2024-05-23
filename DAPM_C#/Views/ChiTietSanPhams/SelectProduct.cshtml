@@ -14,21 +14,29 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SoLuong)
+               Tên sản phẩm
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HinhAnh)
+                Size
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nsx)
+                Màu
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChatLieu)
+                Loại sản phẩm
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GiaTien)
+                Đối tượng
             </th>
-          
+            <th>
+                Nhà sản xuất
+            </th>
+            <th>
+                Chất liệu
+            </th>
+            <th>
+                Giá tiền
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -36,21 +44,29 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.SoLuong)
+                @Html.DisplayFor(modelItem => item.MaSanPhamNavigation.TenSanPham)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HinhAnh)
+                @Html.DisplayFor(modelItem => item.MaSizeNavigation.TenSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaMauNavigation.TenMau)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaLoaiSanPhamNavigation.TenLoaiSanPham)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaDoiTuongNavigation.TenDoiTuong)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nsx)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ChatLieu)
-            </td>
-            <td>
+            </td>   
+             <td>
                 @Html.DisplayFor(modelItem => item.GiaTien)
             </td>
-           
             <td>
                 <form method="post" asp-action="SelectProduct">
                         <input type="hidden" name="id" value="@item.MaChiTietSanPham" />

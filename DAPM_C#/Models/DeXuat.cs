@@ -11,6 +11,8 @@ public partial class DeXuat
 
     public DateTime? NgayDeXuat { get; set; }
 
+    public string? TrangThai { get; set; }
+
     public int? MaCuaHang { get; set; }
 
     public virtual ICollection<ChiTietDeXuat> ChiTietDeXuats { get; set; } = new List<ChiTietDeXuat>();

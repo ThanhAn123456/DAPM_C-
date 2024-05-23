@@ -1,0 +1,66 @@
+﻿@model DAPM_C_.Models.ChiTietDeXuat
+
+@{
+    ViewData["Title"] = "DetailsCTDX";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>DetailsCTDX</h1>
+
+<div>
+    <h4>ChiTietDeXuat</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LyDoDeXuat)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LyDoDeXuat)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoLuongDeXuat)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoLuongDeXuat)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TrangThaiDeXuat)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TrangThaiDeXuat)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoLuongDuyet)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoLuongDuyet)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TrangThaiVanChuyen)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TrangThaiVanChuyen)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.XacNhanNhanHang)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.XacNhanNhanHang)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaChiTietSanPhamNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaChiTietSanPham)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaDeXuatNavigation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaDeXuatNavigation.MaDeXuat)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="ChiTietDeXuat" asp-route-id="@Model.MaDeXuat">Back to list</a>
+</div>

@@ -9,7 +9,7 @@ namespace DAPM_C_.Controllers
     {
         int madx;
         private readonly QuanlyphanphoikhoYodyContext _context;
-        QuanlyphanphoikhoYodyContext data = new QuanlyphanphoikhoYodyContext();
+        QuanlyphanphoikhoYodyContext data = new QuanlyphanphoikhoYodyContext();      
 
         public DeXuatController(QuanlyphanphoikhoYodyContext context)
         {
@@ -18,8 +18,11 @@ namespace DAPM_C_.Controllers
        
         public async Task<IActionResult> Index()
         {
-            var DeXuats = data.DeXuats.Include(x => x.MaCuaHangNavigation).ToList();
-            return View(DeXuats);
+            var deXuats = await _context.DeXuats
+            .Include(dx => dx.MaCuaHangNavigation)
+            .OrderByDescending(dx => dx.NgayDeXuat) // Sắp xếp theo thời gian đề xuất giảm dần
+            .ToListAsync();
+            return View(deXuats);
         }
         public IActionResult Create()
         {
@@ -43,6 +46,43 @@ namespace DAPM_C_.Controllers
             // DeXuat dx = _context.DeXuats.Find(id);
             return View(deXuat);
         }
+        public ActionResult XoaDeXuat(int? MaDeXuat)
+        {
+            DeXuat dx = data.DeXuats.Find(MaDeXuat);
+            return View(dx);
+        }
+        [HttpPost]
+        public ActionResult XoaDeXuat(int MaDeXuat)
+        {
+            DeXuat dx = data.DeXuats.Find(MaDeXuat);
+            if (dx != null)
+            {
+                data.DeXuats.Remove(dx);
+                data.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+        // trang xem chi tiet de xuat
+        public async Task<IActionResult> ChiTietDeXuat(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var deXuat = await _context.DeXuats
+           .Include(d => d.ChiTietDeXuats)
+               .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                   .ThenInclude(cs => cs.MaSanPhamNavigation)
+           .FirstOrDefaultAsync(m => m.MaDeXuat == id);
+            if (deXuat == null)
+            {
+                return NotFound();
+            }
+            TempData["id"] = id;
+            return View(deXuat);
+
+        }
+        // details trang them chi tiet san pham
         public async Task<IActionResult> Details(int? id)
         {
             if (TempData["MessageError"] != null)
@@ -66,6 +106,7 @@ namespace DAPM_C_.Controllers
             TempData["id"] = id;
             return View(deXuat);
         }
+        // thêm chi tiết sản phẩm
         public IActionResult AddChiTiet(int id)
         {
             if (id != 0)
@@ -113,56 +154,62 @@ namespace DAPM_C_.Controllers
           
         }
         // Edit chi tiet cua de xuat
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? maDX)
         {
-            if (id == null)
+            if (id == null || maDX == null)
             {
                 return NotFound();
             }
 
-            var chitietdexuat = await _context.ChiTietDeXuats.FindAsync(id);
-            if (chitietdexuat == null)
+            var chiTietDeXuat = await _context.ChiTietDeXuats
+             .FirstOrDefaultAsync(m => m.MaDeXuat == maDX && m.MaChiTietSanPham == id);
+            if (chiTietDeXuat == null)
             {
                 return NotFound();
             }
-            return View(chitietdexuat);
+            return View(chiTietDeXuat);
         }
+        // Action để xử lý yêu cầu chỉnh sửa
 
-        // POST: CuaHangs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        /*
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaCuaHang,TenCuahang,DiaChi")] CuaHang cuaHang)
+        public async Task<IActionResult> Edit(ChiTietDeXuat chiTietDeXuat)
         {
-            if (id != cuaHang.MaCuaHang)
+            if (chiTietDeXuat != null)
             {
-                return NotFound();
+                ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(chiTietDeXuat.MaDeXuat, chiTietDeXuat.MaChiTietSanPham);
+                ctdx.LyDoDeXuat = chiTietDeXuat.LyDoDeXuat;
+                ctdx.SoLuongDeXuat = chiTietDeXuat.SoLuongDeXuat;
+                data.SaveChanges();
+                return RedirectToAction("Details", new { id = chiTietDeXuat.MaDeXuat });
             }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(cuaHang);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CuaHangExists(cuaHang.MaCuaHang))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(cuaHang);
+            return View(chiTietDeXuat);         
+        }    
+        // xoa chi tiet de xuat
+        public ActionResult Delete(int? MaDeXuat, int? MaChiTietSanPham)
+        {
+            ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(MaDeXuat, MaChiTietSanPham);
+            return View(ctdx);
         }
-        */
+        [HttpPost]
+        public ActionResult Delete(int MaDeXuat, int? MaChiTietSanPham)
+        {
+            ChiTietDeXuat sc = data.ChiTietDeXuats.Find(MaDeXuat, MaChiTietSanPham);
+            if (sc != null)
+            {
+                data.ChiTietDeXuats.Remove(sc);
+                data.SaveChanges();
+                return RedirectToAction("Details", new { id = sc.MaDeXuat });
+            }
+            return View(sc);
+           
+        }
+        // xem chi tiết đề xuất
+        public ActionResult DetailsCTDX(int MaDeXuat, int? MaChiTietSanPham)
+        {
+            ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(MaDeXuat, MaChiTietSanPham);
+            return View(ctdx);
+        }
     }
+          
 }

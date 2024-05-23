@@ -1,10 +1,8 @@
 ﻿@model DAPM_C_.Models.DeXuat
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "XemChiTietDX";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="container mt-5">
     <h2 class="text-center">CHI TIẾT ĐỀ XUẤT</h2>
 
@@ -25,11 +23,6 @@
             </dd>
         </dl>
     </div>
-
-    <div class="mb-4">
-        <a href="@Url.Action("AddChiTiet", new { id = Model.MaDeXuat })" class="btn btn-primary">Thêm chi tiết đề xuất</a>
-    </div>
-
     <h4 class="mb-3">DANH SÁCH CHI TIẾT ĐỀ XUẤT</h4>
     @if (ViewBag.errorMSG != null)
     {
@@ -44,7 +37,9 @@
                 <th>Tên sản phẩm</th>
                 <th>Số lượng đề xuất</th>
                 <th>Lý do đề xuất</th>
-                <th>Hành động</th>
+                <th>Số lượng được duyệt</th>
+                <th>Trạng thái duyệt</th>
+                <th>Hoạt động</th>
             </tr>
         </thead>
         <tbody>
@@ -61,8 +56,13 @@
                         @Html.DisplayFor(modelItem => item.LyDoDeXuat)
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.MaChiTietSanPham" asp-route-maDX="@item.MaDeXuat" class="btn btn-outline-primary btn-sm">Sửa</a>
-                        <a asp-action="Delete" asp-route-MaDeXuat="@item.MaDeXuat" asp-route-MaChiTietSanPham="@item.MaChiTietSanPham" class="btn btn-outline-danger btn-sm">Xóa</a>
+                        @Html.DisplayFor(modelItem => item.SoLuongDuyet)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TrangThaiDeXuat)
+                    </td>
+                    <td>
+                        <a asp-action="DuyetDeXuat" asp-route-id="@item.MaChiTietSanPham" asp-route-maDX="@item.MaDeXuat" class="btn btn-outline-primary btn-sm">Duyệt</a>
                     </td>
                 </tr>
             }
@@ -70,6 +70,12 @@
     </table>
 
     <div class="text-center mt-4">
-        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+        <form method="post" asp-action="CapNhatTrangThaiDX">
+            <input type="hidden" name="MaDeXuat" value="@Model.MaDeXuat" />
+            <button type="submit" class="btn btn-primary">OK</button>
+        </form>
     </div>
+
 </div>
+
+
