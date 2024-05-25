@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using System.ComponentModel.Design;
+using X.PagedList;
 
 namespace DAPM_C_.Controllers
 {
@@ -17,15 +18,17 @@ namespace DAPM_C_.Controllers
     {
         private readonly QuanlyphanphoikhoYodyContext _context;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IConfiguration _configuration;
 
-        public ChiTietSanPhamsController(QuanlyphanphoikhoYodyContext context, IWebHostEnvironment hostEnvironment)
+        public ChiTietSanPhamsController(QuanlyphanphoikhoYodyContext context, IWebHostEnvironment hostEnvironment, IConfiguration configuration)
         {
             _context = context;
             _hostEnvironment = hostEnvironment;
+            _configuration = configuration;
         }
 
         // GET: ChiTietSanPhams
-        public async Task<IActionResult> Index(string searchdocs, string MaMau, string MaSize, string MaDoiTuong)
+        public async Task<IActionResult> Index(string searchdocs, string MaMau, string MaSize, string MaDoiTuong, int? pageNumber)
         {
             IQueryable<ChiTietSanPham> quanlyphanphoikhoYodyContext = _context.ChiTietSanPhams.Include(c => c.MaDoiTuongNavigation).Include(c => c.MaLoaiSanPhamNavigation).Include(c => c.MaMauNavigation).Include(c => c.MaSanPhamNavigation).Include(c => c.MaSizeNavigation);
 
@@ -41,13 +44,18 @@ namespace DAPM_C_.Controllers
 
             if (!string.IsNullOrEmpty(MaSize))
             {
-                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(e => e.MaSize == Convert.ToInt32(MaSize));
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.MaSize == Convert.ToInt32(MaSize));
             }
 
             if (!string.IsNullOrEmpty(MaDoiTuong))
             {
-                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(e => e.MaDoiTuong == Convert.ToInt32(MaDoiTuong));
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.MaDoiTuong == Convert.ToInt32(MaDoiTuong));
             }
+
+            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(q => q.MaChiTietSanPham);
+
+            int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
+            int currentPage = pageNumber ?? 1;
 
             ViewData["MaMauList"] = new SelectList(_context.Maus, "MaMau", "TenMau");
             ViewData["MaSizeList"] = new SelectList(_context.Sizes, "MaSize", "TenSize");
@@ -57,7 +65,7 @@ namespace DAPM_C_.Controllers
             ViewData["CurrentMaSize"] = MaSize;
             ViewData["CurrentMaDoiTuong"] = MaDoiTuong;
 
-            return View(await quanlyphanphoikhoYodyContext.ToListAsync());
+            return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
 
         public IActionResult SelectProduct()
