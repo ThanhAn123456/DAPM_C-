@@ -6,22 +6,39 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAPM_C_.Models;
+using X.PagedList;
 
 namespace DAPM_C_.Controllers
 {
     public class SanphamsController : Controller
     {
         private readonly QuanlyphanphoikhoYodyContext _context;
+        private readonly IConfiguration _configuration;
 
-        public SanphamsController(QuanlyphanphoikhoYodyContext context)
+        public SanphamsController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: Sanphams
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchdocs, int? pageNumber)
         {
-            return View(await _context.Sanphams.ToListAsync());
+            IQueryable<Sanpham> quanlyphanphoikhoYodyContext = _context.Sanphams;
+
+            if (!string.IsNullOrEmpty(searchdocs))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(s => s.TenSanPham.Contains(searchdocs));
+            }
+
+            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(s => s.MaSanPham);
+
+            int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
+            int currentPage = pageNumber ?? 1;
+
+            ViewData["CurrentSearchDocs"] = searchdocs;
+
+            return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
 
         // GET: Sanphams/Details/5

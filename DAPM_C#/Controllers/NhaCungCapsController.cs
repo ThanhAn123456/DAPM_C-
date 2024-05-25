@@ -6,22 +6,39 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAPM_C_.Models;
+using X.PagedList;
 
 namespace DAPM_C_.Controllers
 {
     public class NhaCungCapsController : Controller
     {
         private readonly QuanlyphanphoikhoYodyContext _context;
+        private readonly IConfiguration _configuration;
 
-        public NhaCungCapsController(QuanlyphanphoikhoYodyContext context)
+        public NhaCungCapsController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: NhaCungCaps
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchdocs, int? pageNumber)
         {
-            return View(await _context.NhaCungCaps.ToListAsync());
+            IQueryable<NhaCungCap> quanlyphanphoikhoYodyContext = _context.NhaCungCaps;
+
+            if (!string.IsNullOrEmpty(searchdocs))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(m => m.TenNcc.Contains(searchdocs));
+            }
+
+            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(m => m.MaNcc);
+
+            int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
+            int currentPage = pageNumber ?? 1;
+
+            ViewData["CurrentSearchDocs"] = searchdocs;
+
+            return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
 
         // GET: NhaCungCaps/Details/5

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<DAPM_C_.Models.CuaHang>
+﻿@model IPagedList<DAPM_C_.Models.CuaHang>
+@using X.PagedList;
 
 @{
     ViewData["Title"] = "Index";
@@ -7,20 +8,32 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <p>
+        <a asp-action="Create" class="btn btn-outline-success">Create New</a>
+    </p>
+    <form class="docs-search-form row gx-1 align-items-center" asp-action="Index" style="margin: 0px 0px 16px 0px;">
+
+        <div class="col-auto">
+            <input type="text" id="search-docs" name="searchdocs" value="@ViewData["CurrentSearchDocs"]" class="form-control search-docs" placeholder="search">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn app-btn-secondary">Tìm kiếm</button>
+        </div>
+    </form>
+</div>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MaCuaHang)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().MaCuaHang)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TenCuahang)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().TenCuahang)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DiaChi)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DiaChi)
             </th>
             <th></th>
         </tr>
@@ -46,3 +59,52 @@
 }
     </tbody>
 </table>
+
+<nav class="app-pagination mt-5">
+    <ul class="pagination justify-content-center">
+        @if (Model.HasPreviousPage)
+        {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)" 
+                                    asp-route-searchdocs="@ViewData["CurrentSearchDocs"]">Previous</a>
+                                </li>
+        }
+        else
+        {
+                                <li class="page-item disabled">
+                                    <a class="page-link">Previous</a>
+                                </li>
+        }
+
+        @for (var i = 1; i <= Model.PageCount; i++)
+        {
+            if (i == Model.PageNumber)
+            {
+                                <li class="page-item active">
+                                    <a class="page-link">@i</a>
+                                </li>
+            }
+            else
+            {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" 
+                                    asp-route-searchdocs="@ViewData["CurrentSearchDocs"]">@i</a>
+                                </li>
+            }
+        }
+
+        @if (Model.HasNextPage)
+        {
+                                <li class="page-item">
+                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)" 
+                                    asp-route-searchdocs="@ViewData["CurrentSearchDocs"]">Next</a>
+                                </li>
+        }
+        else
+        {
+                                <li class="page-item disabled">
+                                    <a class="page-link">Next</a>
+                                </li>
+        }
+    </ul>
+</nav><!--//app-pagination-->
