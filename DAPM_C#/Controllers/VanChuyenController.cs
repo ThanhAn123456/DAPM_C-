@@ -61,9 +61,21 @@ namespace DAPM_C_.Controllers
             var deXuat = await _context.DeXuats
             .Include(d => d.MaCuaHangNavigation)
             .Include(d => d.ChiTietDeXuats)
-                .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
-                    .ThenInclude(cs => cs.MaSanPhamNavigation)
-            .FirstOrDefaultAsync(m => m.MaDeXuat == id);
+              .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                  .ThenInclude(cs => cs.MaSanPhamNavigation)
+               .Include(d => d.ChiTietDeXuats)
+                   .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                      .ThenInclude(cs => cs.MaSizeNavigation)
+              .Include(d => d.ChiTietDeXuats)
+                   .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                      .ThenInclude(cs => cs.MaLoaiSanPhamNavigation)
+              .Include(d => d.ChiTietDeXuats)
+                   .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                      .ThenInclude(cs => cs.MaMauNavigation)
+              .Include(d => d.ChiTietDeXuats)
+                   .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                      .ThenInclude(cs => cs.MaDoiTuongNavigation)
+          .FirstOrDefaultAsync(m => m.MaDeXuat == id);
             if (deXuat == null)
             {
                 return NotFound();

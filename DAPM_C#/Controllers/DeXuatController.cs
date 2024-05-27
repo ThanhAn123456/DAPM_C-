@@ -102,11 +102,23 @@ namespace DAPM_C_.Controllers
                 return NotFound();
             }
             var deXuat = await _context.DeXuats
-               .Include(d => d.MaCuaHangNavigation)
+           .Include(d => d.MaCuaHangNavigation)
+           .Include(d => d.ChiTietDeXuats)
+               .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                   .ThenInclude(cs => cs.MaSanPhamNavigation)
+                .Include(d => d.ChiTietDeXuats)
+                    .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                       .ThenInclude(cs => cs.MaSizeNavigation)
                .Include(d => d.ChiTietDeXuats)
-                   .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
-                       .ThenInclude(cs => cs.MaSanPhamNavigation)
-               .FirstOrDefaultAsync(m => m.MaDeXuat == id);
+                    .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                       .ThenInclude(cs => cs.MaLoaiSanPhamNavigation)
+               .Include(d => d.ChiTietDeXuats)
+                    .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                       .ThenInclude(cs => cs.MaMauNavigation)
+               .Include(d => d.ChiTietDeXuats)
+                    .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                       .ThenInclude(cs => cs.MaDoiTuongNavigation)
+           .FirstOrDefaultAsync(m => m.MaDeXuat == id);
             if (deXuat == null)
             {
                 return NotFound();
@@ -128,10 +140,23 @@ namespace DAPM_C_.Controllers
             }
 
             var deXuat = await _context.DeXuats
+            .Include(d => d.MaCuaHangNavigation)
             .Include(d => d.ChiTietDeXuats)
                 .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
                     .ThenInclude(cs => cs.MaSanPhamNavigation)
-            .FirstOrDefaultAsync(m => m.MaDeXuat == id);
+                 .Include(d => d.ChiTietDeXuats)
+                     .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                        .ThenInclude(cs => cs.MaSizeNavigation)
+                .Include(d => d.ChiTietDeXuats)
+                     .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                        .ThenInclude(cs => cs.MaLoaiSanPhamNavigation)
+                .Include(d => d.ChiTietDeXuats)
+                     .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                        .ThenInclude(cs => cs.MaMauNavigation)
+                .Include(d => d.ChiTietDeXuats)
+                     .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                        .ThenInclude(cs => cs.MaDoiTuongNavigation)
+            .FirstOrDefaultAsync(m => m.MaDeXuat == id);           
             if (deXuat == null)
             {
                 return NotFound();
@@ -259,9 +284,20 @@ namespace DAPM_C_.Controllers
            
         }
         // xem chi tiết đề xuất
-        public ActionResult DetailsCTDX(int MaDeXuat, int? MaChiTietSanPham)
+        public async Task<IActionResult> DetailsCTDX(int MaDeXuat, int? MaChiTietSanPham)
         {
-            ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(MaDeXuat, MaChiTietSanPham);
+            var ctdx = await _context.ChiTietDeXuats
+                .Include(ct => ct.MaChiTietSanPhamNavigation)
+                    .ThenInclude(cd => cd.MaSanPhamNavigation)
+                .Include(ct => ct.MaChiTietSanPhamNavigation)
+                    .ThenInclude(cd => cd.MaLoaiSanPhamNavigation)
+                .Include(ct => ct.MaChiTietSanPhamNavigation)
+                    .ThenInclude(cd => cd.MaSizeNavigation)
+                .Include(ct => ct.MaChiTietSanPhamNavigation)
+                    .ThenInclude(cd => cd.MaDoiTuongNavigation)
+                .Include(ct => ct.MaChiTietSanPhamNavigation)
+                    .ThenInclude(cd => cd.MaMauNavigation)
+                        .FirstOrDefaultAsync(m => m.MaDeXuat == MaDeXuat && m.MaChiTietSanPham == MaChiTietSanPham);
             return View(ctdx);
         }
     }

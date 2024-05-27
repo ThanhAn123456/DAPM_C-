@@ -42,6 +42,10 @@
         <thead class="thead-dark">
             <tr>
                 <th>Tên sản phẩm</th>
+                <th>Size</th>
+                <th>Màu</th>
+                <th>Loại sản phẩm</th>
+                <th>Đối tượng</th>
                 <th>Số lượng đề xuất</th>
                 <th>Lý do đề xuất</th>
                 <th>Hành động</th>
@@ -53,6 +57,18 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.MaChiTietSanPhamNavigation.MaSanPhamNavigation.TenSanPham)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaChiTietSanPhamNavigation.MaSizeNavigation.TenSize)
+                    </td>
+                     <td>
+                        @Html.DisplayFor(modelItem => item.MaChiTietSanPhamNavigation.MaMauNavigation.TenMau)
+                    </td>
+                     <td>
+                        @Html.DisplayFor(modelItem => item.MaChiTietSanPhamNavigation.MaLoaiSanPhamNavigation.TenLoaiSanPham)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaChiTietSanPhamNavigation.MaDoiTuongNavigation.TenDoiTuong)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.SoLuongDeXuat)
