@@ -50,8 +50,7 @@
                 <th>Số lượng đề xuất</th>
                 <th>Lý do đề xuất</th>
                 <th>Số lượng được duyệt</th>
-                <th>Trạng thái duyệt</th>
-                <th>Hoạt động</th>
+                <th>Trạng thái duyệt</th>               
             </tr>
         </thead>
         <tbody>
@@ -72,10 +71,7 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.TrangThaiDeXuat)
-                    </td>
-                    <td>
-                        <a asp-action="DuyetDeXuat" asp-route-id="@item.MaChiTietSanPham" asp-route-maDX="@item.MaDeXuat" class="btn btn-outline-primary btn-sm">Duyệt</a>
-                    </td>
+                    </td>                   
                 </tr>
             }
         </tbody>
@@ -84,13 +80,20 @@
     <div class="text-center mt-4">
         <form method="post" asp-action="CapNhatTrangThaiDX">
             <input type="hidden" name="MaDeXuat" value="@Model.MaDeXuat" />
-            <button type="submit" class="btn btn-primary">Duyệt</button>
+            @if (ViewBag.ttvc != null) {
+                <input type="hidden" name="TrangThaiVanChuyen" value="Xác nhận VC" />
+                <button type="submit" class="btn btn-primary">Xác nhận vận chuyển</button>
+
+            }else{
+                <input type="hidden" name="TrangThaiVanChuyen" value="Đã vận chuyển" />
+                <button type="submit" class="btn btn-primary">Đã vận chuyển</button>
+            }
         </form>
         <div>
             <a asp-action="Index">Quay lại</a>
         </div>
     </div>
-   
+
 </div>
 
 

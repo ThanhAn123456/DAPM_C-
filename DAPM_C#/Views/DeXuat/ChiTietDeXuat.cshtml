@@ -23,6 +23,18 @@
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.NgayDeXuat)
             </dd>
+            <dt class="col-sm-2 font-weight-bold">
+                Cửa hàng
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MaCuaHangNavigation.TenCuahang)
+            </dd>
+            <dt class="col-sm-2 font-weight-bold">
+                Địa chỉ cửa hàng
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MaCuaHangNavigation.DiaChi)
+            </dd>
         </dl>
     </div>
 

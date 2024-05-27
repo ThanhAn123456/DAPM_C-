@@ -3,13 +3,9 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
+}s
 
-<h1>DANH SÁCH ĐỀ XUẤT</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Tạo đề xuất</a>
-</p>
+<h1>DANH SÁCH ĐƠN VẬN CHUYỂN</h1>
 
 
 <div style="display: flex; justify-content: center; align-items: center; padding: 16px; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
@@ -60,19 +56,16 @@
     <thead>
         <tr>
             <th>
-                Mã đề xuất
-            </th>
-            <th>
-                Tiêu đề 
+                Tiêu đề
             </th>
             <th>
                 Thời gian đề xuất
             </th>
             <th>
-                Cửa hàng
+                Trạng thái
             </th>
             <th>
-                Trạng thái
+                Cửa hàng
             </th>
             <th></th>
         </tr>
@@ -81,29 +74,24 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MaDeXuat)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Tieude)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NgayDeXuat)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaCuaHangNavigation.TenCuahang)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.TrangThai)
             </td>
             <td>
-                <a asp-action="ChiTietDeXuat" asp-route-id="@item.MaDeXuat" class="btn btn-outline-info">Xem chi tiết</a>
-                 <a asp-action="XoaDeXuat" asp-route-MaDeXuat="@item.MaDeXuat" class="btn btn-outline-danger">Xóa</a>
+                @Html.DisplayFor(modelItem => item.MaCuaHangNavigation.TenCuahang)
+            </td>
+            <td>
+                 <a asp-action="XemChiTietDX" asp-route-id="@item.MaDeXuat" class="btn btn-outline-info">Xem chi tiết</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
-
 
 <nav class="app-pagination mt-5">
     <ul class="pagination justify-content-center">

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<DAPM_C_.Models.ChiTietSanPham>
-
+﻿@model IPagedList<DAPM_C_.Models.ChiTietSanPham>
+@using X.PagedList;
 @{
     ViewData["Title"] = "SelectProduct";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,9 +7,65 @@
 
 <h1>SelectProduct</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div style="display: flex; justify-content: space-between; align-items: center;">  
+    <form method="get" class="docs-search-form row gx-1 align-items-center" asp-action="SelectProduct" style="margin: 0px 0px 16px 0px;">
+
+        <div class="col-auto">
+            <input type="text" id="search-docs" name="searchdocs" value="@ViewData["CurrentSearchDocs"]" class="form-control search-docs" placeholder="search">
+        </div>
+        <div class="col-auto">
+            <select class="form-select w-auto" name="MaMau">
+                <option value="">-- All --</option>
+                @foreach (var item in ViewBag.MaMauList as SelectList)
+                {
+                    @if (item.Value == ViewBag.CurrentMaMau)
+                    {
+                                <option selected="" value="@item.Value">@item.Text</option>
+                    }
+                    else
+                    {
+                                <option value="@item.Value">@item.Text</option>
+                    }	
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <select class="form-select w-auto" name="MaSize">
+                <option value="">-- All --</option>
+                @foreach (var item in ViewBag.MaSizeList as SelectList)
+                {
+                    @if (item.Value == ViewBag.CurrentMaSize)
+                    {
+                                <option selected="" value="@item.Value">@item.Text</option>
+                    }
+                    else
+                    {
+                                <option value="@item.Value">@item.Text</option>
+                    }	
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <select class="form-select w-auto" name="MaDoiTuong">
+                <option value="">-- All --</option>
+                @foreach (var item in ViewBag.MaDoiTuongList as SelectList)
+                {
+                    @if (item.Value == ViewBag.CurrentMaDoiTuong)
+                    {
+                                <option selected="" value="@item.Value">@item.Text</option>
+                    }
+                    else
+                    {
+                                <option value="@item.Value">@item.Text</option>
+                    }	
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn app-btn-secondary">Tìm kiếm</button>
+        </div>
+    </form>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -75,5 +131,63 @@
             </td>
         </tr>
 }
-    </tbody
+    </tbody>
 </table>
+
+<nav class="app-pagination mt-9">
+    <ul class="pagination justify-content-center">
+        @if (Model.HasPreviousPage)
+        {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="SelectProduct" asp-route-pageNumber="@(Model.PageNumber - 1)" 
+                            asp-route-searchdocs="@ViewData["CurrentSearchDocs"]"
+                            asp-route-MaMau="@ViewData["CurrentMaMau"]"
+                            asp-route-MaSize="@ViewData["CurrentMaSize"]"
+                            asp-route-MaDoiTuong="@ViewData["CurrentMaDoiTuong"]">Previous</a>
+                        </li>
+        }
+        else
+        {
+                        <li class="page-item disabled">
+                            <a class="page-link">Previous</a>
+                        </li>
+        }
+
+        @for (var i = 1; i <= Model.PageCount; i++)
+        {
+            if (i == Model.PageNumber)
+            {
+                                        <li class="page-item active">
+                                            <a class="page-link">@i</a>
+                                        </li>
+            }
+            else
+            {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="SelectProduct" asp-route-pageNumber="@i" 
+                                            asp-route-searchdocs="@ViewData["CurrentSearchDocs"]"
+                                            asp-route-MaMau="@ViewData["CurrentMaMau"]"
+                                            asp-route-MaSize="@ViewData["CurrentMaSize"]"
+                                            asp-route-MaDoiTuong="@ViewData["CurrentMaDoiTuong"]">@i</a>
+                                        </li>
+            }
+        }
+
+        @if (Model.HasNextPage)
+        {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="SelectProduct" asp-route-pageNumber="@(Model.PageNumber + 1)" 
+                            asp-route-searchdocs="@ViewData["CurrentSearchDocs"]"
+                            asp-route-MaMau="@ViewData["CurrentMaMau"]"
+                            asp-route-MaSize="@ViewData["CurrentMaSize"]"
+                            asp-route-MaDoiTuong="@ViewData["CurrentMaDoiTuong"]">Next</a>
+                        </li>
+        }
+        else
+        {
+                        <li class="page-item disabled">
+                            <a class="page-link">Next</a>
+                        </li>
+        }
+    </ul>
+</nav><!--//app-pagination-->

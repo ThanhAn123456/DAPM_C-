@@ -2,30 +2,60 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace DAPM_C_.Controllers
 {
     public class DeXuatController : Controller
     {
         int madx;
+        private readonly IConfiguration _configuration;
         private readonly QuanlyphanphoikhoYodyContext _context;
         QuanlyphanphoikhoYodyContext data = new QuanlyphanphoikhoYodyContext();      
 
-        public DeXuatController(QuanlyphanphoikhoYodyContext context)
+        public DeXuatController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
        
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchdocs, string MaCuaHang, string TrangThai, int? pageNumber)
         {
-            var deXuats = await _context.DeXuats
-            .Include(dx => dx.MaCuaHangNavigation)
-            .OrderByDescending(dx => dx.NgayDeXuat) // Sắp xếp theo thời gian đề xuất giảm dần
-            .ToListAsync();
-            return View(deXuats);
+            IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation);
+            if (!string.IsNullOrEmpty(searchdocs))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.Tieude.Contains(searchdocs) || q.MaCuaHangNavigation.TenCuahang.Contains(searchdocs) || q.TrangThai.Contains(searchdocs));
+            }
+            if (!string.IsNullOrEmpty(MaCuaHang))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.MaCuaHang == Convert.ToInt32(MaCuaHang));
+            }
+            if (!string.IsNullOrEmpty(TrangThai))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.TrangThai.Contains(TrangThai));
+            }
+            // Sắp xếp list theo thời gian mới nhất 
+            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderByDescending(q => q.NgayDeXuat);
+            // view bag truyền list cửa hàng và trạng thái đề xuất
+            ViewBag.ListCuaHang = new SelectList(_context.CuaHangs.ToList(), "MaCuaHang", "TenCuahang");
+            ViewBag.ListTrangThai = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Value = "Chờ duyệt", Text = "Chờ duyệt" },
+                new SelectListItem { Value = "Đã duyệt", Text = "Đã duyệt" },
+                new SelectListItem { Value = "Xác nhận VC", Text = "Xác nhận vận chuyển" },
+                new SelectListItem { Value = "Đã vận chuyển", Text = "Đã vận chuyển" },
+            }, "Value", "Text");
+            int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
+            int currentPage = pageNumber ?? 1;
+            ViewData["CurrentSearchDocs"] = searchdocs;
+            ViewData["CurrentCuaHang"] = MaCuaHang;
+            ViewData["CurrentTrangThai"] = TrangThai;
+            //return View(deXuats);
+            return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
         public IActionResult Create()
         {
+            ViewBag.CuaHangList = new SelectList(_context.CuaHangs.ToList(), "MaCuaHang", "TenCuahang");                              
             return View();
         }
 
@@ -33,17 +63,19 @@ namespace DAPM_C_.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(DeXuat deXuat)
         {
+           
             if (ModelState.IsValid)
             {
                 deXuat.NgayDeXuat = DateTime.Now;
                 _context.Add(deXuat);
-                await _context.SaveChangesAsync();
+               await _context.SaveChangesAsync();
                 // return RedirectToAction(nameof(Index));
                 return RedirectToAction("Details", new { id = deXuat.MaDeXuat });
 
             }
             // int id = deXuat.MaDeXuat;
             // DeXuat dx = _context.DeXuats.Find(id);
+            ViewBag.CuaHangList = new SelectList(_context.CuaHangs.ToList(), "MaCuaHang", "TenCuahang");
             return View(deXuat);
         }
         public ActionResult XoaDeXuat(int? MaDeXuat)
@@ -70,10 +102,11 @@ namespace DAPM_C_.Controllers
                 return NotFound();
             }
             var deXuat = await _context.DeXuats
-           .Include(d => d.ChiTietDeXuats)
-               .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
-                   .ThenInclude(cs => cs.MaSanPhamNavigation)
-           .FirstOrDefaultAsync(m => m.MaDeXuat == id);
+               .Include(d => d.MaCuaHangNavigation)
+               .Include(d => d.ChiTietDeXuats)
+                   .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
+                       .ThenInclude(cs => cs.MaSanPhamNavigation)
+               .FirstOrDefaultAsync(m => m.MaDeXuat == id);
             if (deXuat == null)
             {
                 return NotFound();
@@ -121,6 +154,19 @@ namespace DAPM_C_.Controllers
             // lay machitietsanpham tu session
             var maChiTietSanPham = HttpContext.Session.GetInt32("SelectedProductId");
             ViewBag.SelectedProductId = maChiTietSanPham;
+            var tenSanPham = (from ctsp in _context.ChiTietSanPhams
+                              join sp in _context.Sanphams on ctsp.MaSanPham equals sp.MaSanPham
+                              where ctsp.MaChiTietSanPham == maChiTietSanPham
+                              select sp.TenSanPham).FirstOrDefault();
+            if (tenSanPham != null)
+            {
+                ViewBag.nameSelectpr = tenSanPham;
+            }
+            else
+            {
+                ViewBag.nameSelectpr = null;
+            }
+        
             if (maDX == 0)
             {
                 ViewBag.MaDeXuat = id;
@@ -146,10 +192,18 @@ namespace DAPM_C_.Controllers
             }
             else
             {
-                TempData["MessageError"] = null;             
-                _context.ChiTietDeXuats.Add(chiTietDeXuat);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Details", new { id = chiTietDeXuat.MaDeXuat });
+                if (chiTietDeXuat.SoLuongDeXuat > 0 && chiTietDeXuat.MaChiTietSanPham != 0)
+                {
+                    TempData["MessageError"] = null;
+                    _context.ChiTietDeXuats.Add(chiTietDeXuat);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", new { id = chiTietDeXuat.MaDeXuat });
+                }
+                else
+                {
+                    return View(chiTietDeXuat);
+
+                }
             }
           
         }

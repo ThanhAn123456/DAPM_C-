@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using System.ComponentModel.Design;
 using X.PagedList;
+using System.Drawing;
 
 namespace DAPM_C_.Controllers
 {
@@ -68,13 +69,47 @@ namespace DAPM_C_.Controllers
             return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
 
-        public IActionResult SelectProduct()
+        public async Task<IActionResult> SelectProduct(string searchdocs, string MaMau, string MaSize, string MaDoiTuong, int? pageNumber)
         {
-            var ListSanPham = _context.ChiTietSanPhams.Include(s => s.MaSanPhamNavigation).Include(s => s.MaSizeNavigation).Include(m => m.MaMauNavigation)
-                                                        .Include(l => l.MaLoaiSanPhamNavigation).Include(d => d.MaDoiTuongNavigation).ToList();
-            return View(ListSanPham);
+            IQueryable<ChiTietSanPham> quanlyphanphoikhoYodyContext = _context.ChiTietSanPhams.Include(c => c.MaDoiTuongNavigation).Include(c => c.MaLoaiSanPhamNavigation).Include(c => c.MaMauNavigation).Include(c => c.MaSanPhamNavigation).Include(c => c.MaSizeNavigation);
+
+            if (!string.IsNullOrEmpty(searchdocs))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.MaSanPhamNavigation.TenSanPham.Contains(searchdocs) || q.MaLoaiSanPhamNavigation.TenLoaiSanPham.Contains(searchdocs) || q.Nsx.Contains(searchdocs) || q.ChatLieu.Contains(searchdocs));
+            }
+
+            if (!string.IsNullOrEmpty(MaMau))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.MaMau == Convert.ToInt32(MaMau));
+            }
+
+            if (!string.IsNullOrEmpty(MaSize))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.MaSize == Convert.ToInt32(MaSize));
+            }
+
+            if (!string.IsNullOrEmpty(MaDoiTuong))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.MaDoiTuong == Convert.ToInt32(MaDoiTuong));
+            }
+
+            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(q => q.MaChiTietSanPham);
+
+            int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
+            int currentPage = pageNumber ?? 1;
+
+            ViewData["MaMauList"] = new SelectList(_context.Maus, "MaMau", "TenMau");
+            ViewData["MaSizeList"] = new SelectList(_context.Sizes, "MaSize", "TenSize");
+            ViewData["MaDoiTuongList"] = new SelectList(_context.DoiTuongs, "MaDoiTuong", "TenDoiTuong");
+            ViewData["CurrentSearchDocs"] = searchdocs;
+            ViewData["CurrentMaMau"] = MaMau;
+            ViewData["CurrentMaSize"] = MaSize;
+            ViewData["CurrentMaDoiTuong"] = MaDoiTuong;
+
+            return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SelectProduct(int id)
         {
             var mdx = HttpContext.Session.GetInt32("truyenmdx");

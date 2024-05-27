@@ -2,24 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing.Printing;
 using X.PagedList;
 
 namespace DAPM_C_.Controllers
 {
-    public class DuyetDeXuatController : Controller
+    public class VanChuyenController : Controller
     {
         private readonly QuanlyphanphoikhoYodyContext _context;
         private readonly IConfiguration _configuration;
         QuanlyphanphoikhoYodyContext data = new QuanlyphanphoikhoYodyContext();
-        public DuyetDeXuatController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
+        public VanChuyenController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
-        public async Task<IActionResult> Index(string searchdocs,string MaCuaHang, string TrangThai, int? pageNumber)
+        public async Task<IActionResult> Index(string searchdocs, string MaCuaHang, string TrangThai, int? pageNumber)
         {
-            IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation);
+            IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation).Where(c => c.TrangThai !="Chờ duyệt");
             if (!string.IsNullOrEmpty(searchdocs))
             {
                 quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.Tieude.Contains(searchdocs) || q.MaCuaHangNavigation.TenCuahang.Contains(searchdocs) || q.TrangThai.Contains(searchdocs));
@@ -34,30 +33,26 @@ namespace DAPM_C_.Controllers
             }
             // Sắp xếp list theo thời gian mới nhất 
             quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderByDescending(q => q.NgayDeXuat);
-            // view bag truyền list cửa hàng và trạng thái đề xuất
-            ViewBag.ListCuaHang = new SelectList(_context.CuaHangs.ToList(),"MaCuaHang","TenCuahang");
+            // tao viewbag truyèn đói số 
+            ViewBag.ListCuaHang = new SelectList(_context.CuaHangs.ToList(), "MaCuaHang", "TenCuahang");
             ViewBag.ListTrangThai = new SelectList(new List<SelectListItem>
             {
-                new SelectListItem { Value = "Chờ duyệt", Text = "Chờ duyệt" },
                 new SelectListItem { Value = "Đã duyệt", Text = "Đã duyệt" },
                 new SelectListItem { Value = "Xác nhận VC", Text = "Xác nhận vận chuyển" },
                 new SelectListItem { Value = "Đã vận chuyển", Text = "Đã vận chuyển" },
             }, "Value", "Text");
+
             int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
             int currentPage = pageNumber ?? 1;
+
             ViewData["CurrentSearchDocs"] = searchdocs;
             ViewData["CurrentCuaHang"] = MaCuaHang;
             ViewData["CurrentTrangThai"] = TrangThai;
-            //return View(deXuats);
+            // var listDX = _context.DeXuats.Include(k => k.MaCuaHangNavigation).Where(k => k.TrangThai != "Chờ duyệt").ToList();
             return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
-        // xem chi tiet de xuat de duyet
         public async Task<IActionResult> XemChiTietDX(int? id)
-        {
-            if (TempData["MessageError"] != null)
-            {
-                ViewBag.errorMSG = TempData["MessageError"];
-            }
+        {          
             if (id == null)
             {
                 return NotFound();
@@ -74,57 +69,32 @@ namespace DAPM_C_.Controllers
                 return NotFound();
             }
             TempData["id"] = id;
-            return View(deXuat);
-        }
-        // duyet de xuat
-        // Duyet chi tiet cua de xuat
-        public async Task<IActionResult> DuyetDeXuat(int? id, int? maDX)
-        {
-            if (id == null || maDX == null)
+            DeXuat D =  data.DeXuats.Find(id);
+            if (D != null)
             {
-                return NotFound();
-            }
-            ViewBag.TrangThaiOptions = new SelectList(new List<SelectListItem>
-            {
-                new SelectListItem { Value = "CN", Text = "Duyệt" },
-                new SelectListItem { Value = "KD", Text = "Không duyệt" }
-            }, "Value", "Text");
-            var chiTietDeXuat = await _context.ChiTietDeXuats
-             .FirstOrDefaultAsync(m => m.MaDeXuat == maDX && m.MaChiTietSanPham == id);
-            if (chiTietDeXuat == null)
-            {
-                return NotFound();
-            }
-            return View(chiTietDeXuat);
-        }
-        // Action để xử lý yêu cầu chỉnh sửa
+                if (D.TrangThai.Equals("Đã duyệt", StringComparison.OrdinalIgnoreCase))
+                {
+                    ViewBag.ttvc = "CD";
+                }
+                else
+                {
+                    ViewBag.ttvc = null;
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DuyetDeXuat(ChiTietDeXuat chiTietDeXuat)
-        {
-            if (chiTietDeXuat != null)
-            {
-                ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(chiTietDeXuat.MaDeXuat, chiTietDeXuat.MaChiTietSanPham);
-                ctdx.LyDoDeXuat = chiTietDeXuat.LyDoDeXuat;
-                ctdx.SoLuongDeXuat = chiTietDeXuat.SoLuongDeXuat;
-                ctdx.SoLuongDuyet = chiTietDeXuat.SoLuongDuyet;
-                ctdx.TrangThaiDeXuat = chiTietDeXuat.TrangThaiDeXuat;
-                data.SaveChanges();
-                return RedirectToAction("XemChiTietDX", new { id = chiTietDeXuat.MaDeXuat });
+                }
             }
-            return View(chiTietDeXuat);
+           
+            return View(deXuat);
         }
         // cap nhat trang thai cua de xuat
         [HttpPost]
-        public ActionResult CapNhatTrangThaiDX(int MaDeXuat)
+        public ActionResult CapNhatTrangThaiDX(int MaDeXuat, string TrangThaiVanChuyen)
         {
             DeXuat dx = data.DeXuats.Find(MaDeXuat);
             if (dx != null)
             {
-                dx.TrangThai = "Đã duyệt";
+                dx.TrangThai = TrangThaiVanChuyen;
                 data.SaveChanges();
-            }         
+            }
             return RedirectToAction("Index");
         }
     }
