@@ -11,6 +11,36 @@
     <h4>ChiTietDeXuat</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            Sản phẩm
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaSanPhamNavigation.TenSanPham)
+        </dd>
+        <dt class="col-sm-2">
+            Size
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaSizeNavigation.TenSize)
+        </dd>
+        <dt class="col-sm-2">
+            Màu
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaMauNavigation.TenMau)
+        </dd>
+        <dt class="col-sm-2">
+            Loại
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaLoaiSanPhamNavigation.TenLoaiSanPham)
+        </dd>
+        <dt class="col-sm-2">
+            Đối tượng
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaDoiTuongNavigation.TenDoiTuong)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.LyDoDeXuat)
         </dt>
@@ -34,31 +64,7 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SoLuongDuyet)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TrangThaiVanChuyen)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TrangThaiVanChuyen)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.XacNhanNhanHang)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.XacNhanNhanHang)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaChiTietSanPhamNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaChiTietSanPham)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MaDeXuatNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MaDeXuatNavigation.MaDeXuat)
-        </dd>
+        </dd>            
     </dl>
 </div>
 <div>
