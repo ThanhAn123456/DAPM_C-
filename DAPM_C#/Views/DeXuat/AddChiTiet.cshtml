@@ -1,0 +1,58 @@
+﻿@model DAPM_C_.Models.ChiTietDeXuat
+
+@{
+    ViewData["Title"] = "AddChiTiet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mt-4">Thêm chi tiết</h2>
+<hr />
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="AddChiTiet" id="chiTietDeXuatForm" class="shadow p-4 rounded bg-light">
+            <input asp-for="MaDeXuat" type="hidden" value="@ViewBag.MaDeXuat" id="maDeXuat" />
+            <input asp-for="TrangThaiDeXuat" type="hidden" value="CD" id="TrangThaiDeXuat" />
+            <input asp-for="SoLuongDuyet" type="hidden" value="0" id="SoLuongDuyet" />
+            <div class="text-right mb-3">
+                <a class="btn btn-primary" asp-route-madexuat="@ViewBag.MaDeXuat" asp-controller="ChiTietSanPhams" asp-action="SelectProduct">Chọn sản phẩm</a>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaChiTietSanPham" class="control-label">Sản phẩm</label>
+                <input asp-for="MaChiTietSanPham" id="maChiTietSanPham" type="hidden" class="form-control" value="@ViewBag.SelectedProductId" readonly="readonly" />
+                @if (ViewBag.nameSelectpr == null)
+                {
+                    <br />
+                    <label style="color : red">Chưa chọn sản phẩm nào!</label>
+                }
+                else
+                {
+                    <br />
+                    <label style="color : green">Đã chọn: @ViewBag.nameSelectpr</label>
+                }           
+            </div>
+            <div class="form-group">
+                <label asp-for="LyDoDeXuat" class="control-label">Lý do đề xuất</label>
+                <input asp-for="LyDoDeXuat" class="form-control" />
+                <span asp-validation-for="LyDoDeXuat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoLuongDeXuat" class="control-label">Số lượng đề xuất</label>
+                <input asp-for="SoLuongDeXuat" class="form-control" />
+                <span asp-validation-for="SoLuongDeXuat" class="text-danger"></span>
+            </div>
+            <div class="form-group text-center">
+                <input type="submit" value="thêm" class="btn btn-primary btn-block" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="text-center mt-3">
+    <a asp-action="Details" asp-route-id="@ViewBag.MaDeXuat" class="btn btn-secondary">Quay lại</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -6,22 +6,39 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAPM_C_.Models;
+using X.PagedList;
 
 namespace DAPM_C_.Controllers
 {
     public class SizesController : Controller
     {
         private readonly QuanlyphanphoikhoYodyContext _context;
+        private readonly IConfiguration _configuration;
 
-        public SizesController(QuanlyphanphoikhoYodyContext context)
+        public SizesController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: Sizes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchdocs, int? pageNumber)
         {
-            return View(await _context.Sizes.ToListAsync());
+            IQueryable<Size> quanlyphanphoikhoYodyContext = _context.Sizes;
+
+            if (!string.IsNullOrEmpty(searchdocs))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(m => m.TenSize.Contains(searchdocs));
+            }
+
+            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(m => m.MaSize);
+
+            int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
+            int currentPage = pageNumber ?? 1;
+
+            ViewData["CurrentSearchDocs"] = searchdocs;
+
+            return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
 
         // GET: Sizes/Details/5

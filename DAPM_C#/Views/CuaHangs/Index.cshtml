@@ -1,4 +1,4 @@
-﻿@model IPagedList<DAPM_C_.Models.NhaCungCap>
+﻿@model IPagedList<DAPM_C_.Models.CuaHang>
 @using X.PagedList;
 
 @{
@@ -27,16 +27,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().TenNcc)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().MaCuaHang)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().TenCuahang)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().DiaChi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Sdt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().NhanVienLienHe)
             </th>
             <th></th>
         </tr>
@@ -45,21 +42,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TenNcc)
+                @Html.DisplayFor(modelItem => item.MaCuaHang)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenCuahang)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DiaChi)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sdt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NhanVienLienHe)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaNcc" class="btn btn-outline-primary">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.MaNcc" class="btn btn-outline-info">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.MaNcc" class="btn btn-outline-danger">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.MaCuaHang">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MaCuaHang">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.MaCuaHang">Delete</a>
             </td>
         </tr>
 }

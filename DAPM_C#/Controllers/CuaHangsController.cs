@@ -10,28 +10,28 @@ using X.PagedList;
 
 namespace DAPM_C_.Controllers
 {
-    public class SanphamsController : Controller
+    public class CuaHangsController : Controller
     {
         private readonly QuanlyphanphoikhoYodyContext _context;
         private readonly IConfiguration _configuration;
 
-        public SanphamsController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
+        public CuaHangsController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
 
-        // GET: Sanphams
+        // GET: CuaHangs
         public async Task<IActionResult> Index(string searchdocs, int? pageNumber)
         {
-            IQueryable<Sanpham> quanlyphanphoikhoYodyContext = _context.Sanphams;
+            IQueryable<CuaHang> quanlyphanphoikhoYodyContext = _context.CuaHangs;
 
             if (!string.IsNullOrEmpty(searchdocs))
             {
-                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(s => s.TenSanPham.Contains(searchdocs));
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(c => c.TenCuahang.Contains(searchdocs));
             }
 
-            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(s => s.MaSanPham);
+            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(c => c.MaCuaHang);
 
             int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
             int currentPage = pageNumber ?? 1;
@@ -41,7 +41,7 @@ namespace DAPM_C_.Controllers
             return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
 
-        // GET: Sanphams/Details/5
+        // GET: CuaHangs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,39 +49,39 @@ namespace DAPM_C_.Controllers
                 return NotFound();
             }
 
-            var sanpham = await _context.Sanphams
-                .FirstOrDefaultAsync(m => m.MaSanPham == id);
-            if (sanpham == null)
+            var cuaHang = await _context.CuaHangs
+                .FirstOrDefaultAsync(m => m.MaCuaHang == id);
+            if (cuaHang == null)
             {
                 return NotFound();
             }
 
-            return View(sanpham);
+            return View(cuaHang);
         }
 
-        // GET: Sanphams/Create
+        // GET: CuaHangs/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Sanphams/Create
+        // POST: CuaHangs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaSanPham,TenSanPham")] Sanpham sanpham)
+        public async Task<IActionResult> Create([Bind("MaCuaHang,TenCuahang,DiaChi")] CuaHang cuaHang)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sanpham);
+                _context.Add(cuaHang);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(sanpham);
+            return View(cuaHang);
         }
 
-        // GET: Sanphams/Edit/5
+        // GET: CuaHangs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,22 +89,22 @@ namespace DAPM_C_.Controllers
                 return NotFound();
             }
 
-            var sanpham = await _context.Sanphams.FindAsync(id);
-            if (sanpham == null)
+            var cuaHang = await _context.CuaHangs.FindAsync(id);
+            if (cuaHang == null)
             {
                 return NotFound();
             }
-            return View(sanpham);
+            return View(cuaHang);
         }
 
-        // POST: Sanphams/Edit/5
+        // POST: CuaHangs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaSanPham,TenSanPham")] Sanpham sanpham)
+        public async Task<IActionResult> Edit(int id, [Bind("MaCuaHang,TenCuahang,DiaChi")] CuaHang cuaHang)
         {
-            if (id != sanpham.MaSanPham)
+            if (id != cuaHang.MaCuaHang)
             {
                 return NotFound();
             }
@@ -113,12 +113,12 @@ namespace DAPM_C_.Controllers
             {
                 try
                 {
-                    _context.Update(sanpham);
+                    _context.Update(cuaHang);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SanphamExists(sanpham.MaSanPham))
+                    if (!CuaHangExists(cuaHang.MaCuaHang))
                     {
                         return NotFound();
                     }
@@ -129,10 +129,10 @@ namespace DAPM_C_.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(sanpham);
+            return View(cuaHang);
         }
 
-        // GET: Sanphams/Delete/5
+        // GET: CuaHangs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,34 +140,34 @@ namespace DAPM_C_.Controllers
                 return NotFound();
             }
 
-            var sanpham = await _context.Sanphams
-                .FirstOrDefaultAsync(m => m.MaSanPham == id);
-            if (sanpham == null)
+            var cuaHang = await _context.CuaHangs
+                .FirstOrDefaultAsync(m => m.MaCuaHang == id);
+            if (cuaHang == null)
             {
                 return NotFound();
             }
 
-            return View(sanpham);
+            return View(cuaHang);
         }
 
-        // POST: Sanphams/Delete/5
+        // POST: CuaHangs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var sanpham = await _context.Sanphams.FindAsync(id);
-            if (sanpham != null)
+            var cuaHang = await _context.CuaHangs.FindAsync(id);
+            if (cuaHang != null)
             {
-                _context.Sanphams.Remove(sanpham);
+                _context.CuaHangs.Remove(cuaHang);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SanphamExists(int id)
+        private bool CuaHangExists(int id)
         {
-            return _context.Sanphams.Any(e => e.MaSanPham == id);
+            return _context.CuaHangs.Any(e => e.MaCuaHang == id);
         }
     }
 }

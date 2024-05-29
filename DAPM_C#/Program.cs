@@ -13,8 +13,9 @@ namespace DAPM_C_
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<QuanlyphanphoikhoYodyContext>(options => options.UseSqlServer(
                 builder.Configuration.GetConnectionString("QuanLyPhanPhoiKhoYodyConnection")));
+            builder.Services.AddSession();           
             var app = builder.Build();
-
+             app.UseSession();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {

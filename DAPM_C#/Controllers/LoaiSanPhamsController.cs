@@ -6,22 +6,39 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DAPM_C_.Models;
+using X.PagedList;
 
 namespace DAPM_C_.Controllers
 {
     public class LoaiSanPhamsController : Controller
     {
         private readonly QuanlyphanphoikhoYodyContext _context;
+        private readonly IConfiguration _configuration;
 
-        public LoaiSanPhamsController(QuanlyphanphoikhoYodyContext context)
+        public LoaiSanPhamsController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: LoaiSanPhams
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchdocs, int? pageNumber)
         {
-            return View(await _context.LoaiSanPhams.ToListAsync());
+            IQueryable<LoaiSanPham> quanlyphanphoikhoYodyContext = _context.LoaiSanPhams;
+
+            if (!string.IsNullOrEmpty(searchdocs))
+            {
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(l => l.TenLoaiSanPham.Contains(searchdocs));
+            }
+
+            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(l => l.MaLoaiSanPham);
+
+            int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
+            int currentPage = pageNumber ?? 1;
+
+            ViewData["CurrentSearchDocs"] = searchdocs;
+
+            return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
 
         // GET: LoaiSanPhams/Details/5

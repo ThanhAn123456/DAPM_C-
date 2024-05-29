@@ -1,18 +1,14 @@
 ﻿@model IPagedList<DAPM_C_.Models.ChiTietSanPham>
 @using X.PagedList;
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "SelectProduct";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>SelectProduct</h1>
 
-<div style="display: flex; justify-content: space-between; align-items: center;">
-    <p>
-        <a asp-action="Create" class="btn btn-outline-success">Create New</a>
-    </p>
-    <form class="docs-search-form row gx-1 align-items-center" asp-action="Index" style="margin: 0px 0px 16px 0px;">
+<div style="display: flex; justify-content: space-between; align-items: center;">  
+    <form method="get" class="docs-search-form row gx-1 align-items-center" asp-action="SelectProduct" style="margin: 0px 0px 16px 0px;">
 
         <div class="col-auto">
             <input type="text" id="search-docs" name="searchdocs" value="@ViewData["CurrentSearchDocs"]" class="form-control search-docs" placeholder="search">
@@ -70,43 +66,33 @@
         </div>
     </form>
 </div>
-
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().MaChiTietSanPham)
+               Tên sản phẩm
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().SoLuong)
-            </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.HinhAnh)
+                Size
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Nsx)
+                Màu
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ChatLieu)
-            </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().GiaTien)
-            </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.MaDoiTuongNavigation)
+                Loại sản phẩm
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaLoaiSanPhamNavigation)
+                Đối tượng
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaMauNavigation)
-            </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().MaSanPhamNavigation)
+                Nhà sản xuất
             </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.MaSizeNavigation)
-            </th> *@
+            <th>
+                Chất liệu
+            </th>
+            <th>
+                Giá tiền
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -114,54 +100,46 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.MaChiTietSanPham)
+                @Html.DisplayFor(modelItem => item.MaSanPhamNavigation.TenSanPham)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SoLuong)
+                @Html.DisplayFor(modelItem => item.MaSizeNavigation.TenSize)
             </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.HinhAnh)
+            <td>
+                @Html.DisplayFor(modelItem => item.MaMauNavigation.TenMau)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaLoaiSanPhamNavigation.TenLoaiSanPham)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaDoiTuongNavigation.TenDoiTuong)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nsx)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ChatLieu)
-            </td> *@
-            <td>
+            </td>   
+             <td>
                 @Html.DisplayFor(modelItem => item.GiaTien)
             </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.MaDoiTuongNavigation.MaDoiTuong)
-            </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaLoaiSanPhamNavigation.MaLoaiSanPham)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaMauNavigation.MaMau)
-            </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.MaSanPhamNavigation.TenSanPham)
-            </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.MaSizeNavigation.MaSize)
-            </td> *@
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MaChiTietSanPham" class="btn btn-outline-primary">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.MaChiTietSanPham" class="btn btn-outline-info">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.MaChiTietSanPham" class="btn btn-outline-danger">Delete</a>
+                <form method="post" asp-action="SelectProduct">
+                        <input type="hidden" name="id" value="@item.MaChiTietSanPham" />
+                    <button type="submit" class="btn btn-primary">Select</button>
+                </form>
             </td>
         </tr>
 }
     </tbody>
 </table>
 
-<nav class="app-pagination mt-5">
+<nav class="app-pagination mt-9">
     <ul class="pagination justify-content-center">
         @if (Model.HasPreviousPage)
         {
                         <li class="page-item">
-                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)" 
+                            <a class="page-link" asp-action="SelectProduct" asp-route-pageNumber="@(Model.PageNumber - 1)" 
                             asp-route-searchdocs="@ViewData["CurrentSearchDocs"]"
                             asp-route-MaMau="@ViewData["CurrentMaMau"]"
                             asp-route-MaSize="@ViewData["CurrentMaSize"]"
@@ -186,7 +164,7 @@
             else
             {
                                         <li class="page-item">
-                                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" 
+                                            <a class="page-link" asp-action="SelectProduct" asp-route-pageNumber="@i" 
                                             asp-route-searchdocs="@ViewData["CurrentSearchDocs"]"
                                             asp-route-MaMau="@ViewData["CurrentMaMau"]"
                                             asp-route-MaSize="@ViewData["CurrentMaSize"]"
@@ -198,7 +176,7 @@
         @if (Model.HasNextPage)
         {
                         <li class="page-item">
-                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)" 
+                            <a class="page-link" asp-action="SelectProduct" asp-route-pageNumber="@(Model.PageNumber + 1)" 
                             asp-route-searchdocs="@ViewData["CurrentSearchDocs"]"
                             asp-route-MaMau="@ViewData["CurrentMaMau"]"
                             asp-route-MaSize="@ViewData["CurrentMaSize"]"

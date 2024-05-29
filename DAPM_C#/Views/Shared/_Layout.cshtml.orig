@@ -11,6 +11,7 @@
 	<meta name="description" content="Portal - Bootstrap 5 Admin Dashboard Template For Developers">
 	<meta name="author" content="Xiaoying Riley at 3rd Wave Media">    
 	<link rel="shortcut icon" href="favicon.ico"> 
+
 	<!-- FontAwesome JS-->
 	<script defer src="~/plugins/fontawesome/js/all.min.js"></script>
 
@@ -167,14 +168,23 @@
 					<ul class="app-menu list-unstyled accordion" id="menu-accordion">
 						<li class="nav-item">
 							<!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+<<<<<<< HEAD
+							<span class="nav-icon">
+							<a @Html.ActionLink("Nhà Cung cấp", "Index", "NhaCungCaps", new { area = "" }, new { @class = "nav-link active" })
+=======
 							<a class="nav-link" asp-controller="Home" asp-action="Index">
 								<span class="nav-icon">
+>>>>>>> develop
 								<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-house-door" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 		  <path fill-rule="evenodd" d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z"/>
 		  <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
 		</svg>
 								 </span>
+<<<<<<< HEAD
+								 <span class="nav-link-text"></span>
+=======
 								 <span class="nav-link-text">Trang chủ</span>
+>>>>>>> develop
 							</a><!--//nav-link-->
 						</li><!--//nav-item-->
 						<li class="nav-item">
@@ -227,13 +237,9 @@
 									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="Sizes" asp-action="Index">Size</a></li>
 									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="Maus" asp-action="Index">Màu</a></li>
 									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="LoaiSanPhams" asp-action="Index">Loại sản phẩm</a></li>
-									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="CuaHangs" asp-action="Index">Cửa hàng</a></li>
+									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="DoiTuongs" asp-action="Index">Đối tượng</a></li>
 									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="SanPhams" asp-action="Index">Sản phẩm</a></li>
 									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="ChiTietSanPhams" asp-action="Index">Chi tiết sản phẩm</a></li>
-									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="DeXuat" asp-action="Index">Đề xuất</a></li>
-									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="DuyetDeXuat" asp-action="Index">Duyệt đề xuất</a></li>
-									<li class="submenu-item"><a class="submenu-link" asp-area="" asp-controller="VanChuyen" asp-action="Index">Vận chuyển</a></li>
-
 								</ul>
 							</div>
 						</li><!--//nav-item-->
@@ -391,7 +397,7 @@
 		$('.submenu-link[href="'+ relativePath +'"]').addClass('active');
 	});
 	</script>
-	@RenderSection("scripts", required: false)
+
 </body>
 </html> 
 
