@@ -1,5 +1,6 @@
 using DAPM_C_.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace DAPM_C_
 {
@@ -13,8 +14,18 @@ namespace DAPM_C_
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<QuanlyphanphoikhoYodyContext>(options => options.UseSqlServer(
                 builder.Configuration.GetConnectionString("QuanLyPhanPhoiKhoYodyConnection")));
-            builder.Services.AddSession();           
-            var app = builder.Build();
+            builder.Services.AddSession();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer();
+
+
+			var app = builder.Build();
              app.UseSession();
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -29,7 +40,8 @@ namespace DAPM_C_
 
             app.UseRouting();
 
-            app.UseAuthorization();
+			app.UseAuthentication();
+			app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

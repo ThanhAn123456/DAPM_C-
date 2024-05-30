@@ -21,14 +21,34 @@ namespace DAPM_C_.Controllers
         // GET: TaiKhoans
         public async Task<IActionResult> Index()
         {
-            var quanlyphanphoikhoYodyContext = _context.TaiKhoans.Include(t => t.MaCuaHangNavigation).Include(t => t.MaQuyenNavigation);
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			var quanlyphanphoikhoYodyContext = _context.TaiKhoans.Include(t => t.MaCuaHangNavigation).Include(t => t.MaQuyenNavigation);
             return View(await quanlyphanphoikhoYodyContext.ToListAsync());
         }
 
         // GET: TaiKhoans/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -48,7 +68,17 @@ namespace DAPM_C_.Controllers
         // GET: TaiKhoans/Create
         public IActionResult Create()
         {
-            ViewData["MaCuaHang"] = new SelectList(_context.CuaHangs, "MaCuaHang", "MaCuaHang");
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			ViewData["MaCuaHang"] = new SelectList(_context.CuaHangs, "MaCuaHang", "MaCuaHang");
             ViewData["MaQuyen"] = new SelectList(_context.PhanQuyens, "MaQuyen", "MaQuyen");
             return View();
         }
@@ -74,7 +104,17 @@ namespace DAPM_C_.Controllers
         // GET: TaiKhoans/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -129,7 +169,17 @@ namespace DAPM_C_.Controllers
         // GET: TaiKhoans/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -165,5 +215,42 @@ namespace DAPM_C_.Controllers
         {
             return _context.TaiKhoans.Any(e => e.MaTk == id);
         }
-    }
+
+		// GET: Login
+		public IActionResult Login()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Login(TaiKhoan taikhoan)
+		{
+
+			var user = _context.TaiKhoans.FirstOrDefault(t => t.Email == taikhoan.Email && t.Matkhau == taikhoan.Matkhau);
+
+			if (user != null)
+			{
+				HttpContext.Session.SetString("MaTk", user.MaTk.ToString());
+				HttpContext.Session.SetString("HoTen", user.HoTen);
+				HttpContext.Session.SetString("MaQuyen", user.MaQuyen.ToString());
+				if (user.HinhAnh == null)
+				{
+					user.HinhAnh = "avatar_default.jpg";
+				}
+				HttpContext.Session.SetString("HinhAnh", user.HinhAnh);
+				return RedirectToAction("Index", "Home");
+			}
+
+			ModelState.AddModelError("", "Invalid username or password");
+
+			return View();
+		}
+
+		public IActionResult Logout()
+		{
+			HttpContext.Session.Clear();
+			return RedirectToAction("Index", "Home");
+		}
+	}
 }
