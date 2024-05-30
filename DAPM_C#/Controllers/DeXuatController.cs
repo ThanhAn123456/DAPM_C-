@@ -21,7 +21,17 @@ namespace DAPM_C_.Controllers
        
         public async Task<IActionResult> Index(string searchdocs, string MaCuaHang, string TrangThai, int? pageNumber)
         {
-            IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation);
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation);
             if (!string.IsNullOrEmpty(searchdocs))
             {
                 quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.Tieude.Contains(searchdocs) || q.MaCuaHangNavigation.TenCuahang.Contains(searchdocs) || q.TrangThai.Contains(searchdocs));
@@ -55,7 +65,17 @@ namespace DAPM_C_.Controllers
         }
         public IActionResult Create()
         {
-            ViewBag.CuaHangList = new SelectList(_context.CuaHangs.ToList(), "MaCuaHang", "TenCuahang");                              
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			ViewBag.CuaHangList = new SelectList(_context.CuaHangs.ToList(), "MaCuaHang", "TenCuahang");                              
             return View();
         }
 
@@ -80,7 +100,17 @@ namespace DAPM_C_.Controllers
         }
         public ActionResult XoaDeXuat(int? MaDeXuat)
         {
-            DeXuat dx = data.DeXuats.Find(MaDeXuat);
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			DeXuat dx = data.DeXuats.Find(MaDeXuat);
             return View(dx);
         }
         [HttpPost]
@@ -97,7 +127,17 @@ namespace DAPM_C_.Controllers
         // trang xem chi tiet de xuat
         public async Task<IActionResult> ChiTietDeXuat(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -130,7 +170,17 @@ namespace DAPM_C_.Controllers
         // details trang them chi tiet san pham
         public async Task<IActionResult> Details(int? id)
         {
-            if (TempData["MessageError"] != null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (TempData["MessageError"] != null)
             {
                 ViewBag.errorMSG = TempData["MessageError"];
             }                          
@@ -167,7 +217,17 @@ namespace DAPM_C_.Controllers
         // thêm chi tiết sản phẩm
         public IActionResult AddChiTiet(int id)
         {
-            if (id != 0)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id != 0)
             {
                 madx = id;
                 HttpContext.Session.SetInt32("truyenmdx", madx);
@@ -235,7 +295,17 @@ namespace DAPM_C_.Controllers
         // Edit chi tiet cua de xuat
         public async Task<IActionResult> Edit(int? id, int? maDX)
         {
-            if (id == null || maDX == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null || maDX == null)
             {
                 return NotFound();
             }
@@ -267,7 +337,17 @@ namespace DAPM_C_.Controllers
         // xoa chi tiet de xuat
         public ActionResult Delete(int? MaDeXuat, int? MaChiTietSanPham)
         {
-            ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(MaDeXuat, MaChiTietSanPham);
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(MaDeXuat, MaChiTietSanPham);
             return View(ctdx);
         }
         [HttpPost]
@@ -286,7 +366,17 @@ namespace DAPM_C_.Controllers
         // xem chi tiết đề xuất
         public async Task<IActionResult> DetailsCTDX(int MaDeXuat, int? MaChiTietSanPham)
         {
-            var ctdx = await _context.ChiTietDeXuats
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			var ctdx = await _context.ChiTietDeXuats
                 .Include(ct => ct.MaChiTietSanPhamNavigation)
                     .ThenInclude(cd => cd.MaSanPhamNavigation)
                 .Include(ct => ct.MaChiTietSanPhamNavigation)

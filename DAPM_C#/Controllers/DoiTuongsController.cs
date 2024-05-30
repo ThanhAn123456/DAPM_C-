@@ -21,13 +21,33 @@ namespace DAPM_C_.Controllers
         // GET: DoiTuongs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DoiTuongs.ToListAsync());
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			return View(await _context.DoiTuongs.ToListAsync());
         }
 
         // GET: DoiTuongs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -45,7 +65,17 @@ namespace DAPM_C_.Controllers
         // GET: DoiTuongs/Create
         public IActionResult Create()
         {
-            return View();
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			return View();
         }
 
         // POST: DoiTuongs/Create
@@ -67,7 +97,17 @@ namespace DAPM_C_.Controllers
         // GET: DoiTuongs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -118,7 +158,17 @@ namespace DAPM_C_.Controllers
         // GET: DoiTuongs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }

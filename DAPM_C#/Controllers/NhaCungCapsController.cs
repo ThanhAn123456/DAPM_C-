@@ -24,7 +24,17 @@ namespace DAPM_C_.Controllers
         // GET: NhaCungCaps
         public async Task<IActionResult> Index(string searchdocs, int? pageNumber)
         {
-            IQueryable<NhaCungCap> quanlyphanphoikhoYodyContext = _context.NhaCungCaps;
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			IQueryable<NhaCungCap> quanlyphanphoikhoYodyContext = _context.NhaCungCaps;
 
             if (!string.IsNullOrEmpty(searchdocs))
             {
@@ -44,7 +54,17 @@ namespace DAPM_C_.Controllers
         // GET: NhaCungCaps/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -62,7 +82,17 @@ namespace DAPM_C_.Controllers
         // GET: NhaCungCaps/Create
         public IActionResult Create()
         {
-            return View();
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			return View();
         }
 
         // POST: NhaCungCaps/Create
@@ -84,7 +114,17 @@ namespace DAPM_C_.Controllers
         // GET: NhaCungCaps/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -135,7 +175,17 @@ namespace DAPM_C_.Controllers
         // GET: NhaCungCaps/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
