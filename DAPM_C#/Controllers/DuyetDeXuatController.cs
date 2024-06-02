@@ -116,13 +116,26 @@ namespace DAPM_C_.Controllers
         {
             if (chiTietDeXuat != null)
             {
-                ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(chiTietDeXuat.MaDeXuat, chiTietDeXuat.MaChiTietSanPham);
-                ctdx.LyDoDeXuat = chiTietDeXuat.LyDoDeXuat;
-                ctdx.SoLuongDeXuat = chiTietDeXuat.SoLuongDeXuat;
-                ctdx.SoLuongDuyet = chiTietDeXuat.SoLuongDuyet;
-                ctdx.TrangThaiDeXuat = chiTietDeXuat.TrangThaiDeXuat;
-                data.SaveChanges();
-                return RedirectToAction("XemChiTietDX", new { id = chiTietDeXuat.MaDeXuat });
+                if (chiTietDeXuat.SoLuongDuyet > 0 && chiTietDeXuat.TrangThaiDeXuat.Equals("KD"))
+                {
+                    ViewBag.MSG = "Số lượng duyệt > 0 vui lòng chọn duyệt!";
+                    ViewBag.TrangThaiOptions = new SelectList(new List<SelectListItem>
+                        {
+                            new SelectListItem { Value = "CN", Text = "Duyệt" },
+                            new SelectListItem { Value = "KD", Text = "Không duyệt" }
+                        }, "Value", "Text");
+                    return View(chiTietDeXuat);
+                }else
+                {
+                    ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(chiTietDeXuat.MaDeXuat, chiTietDeXuat.MaChiTietSanPham);
+                    ctdx.LyDoDeXuat = chiTietDeXuat.LyDoDeXuat;
+                    ctdx.SoLuongDeXuat = chiTietDeXuat.SoLuongDeXuat;
+                    ctdx.SoLuongDuyet = chiTietDeXuat.SoLuongDuyet;
+                    ctdx.TrangThaiDeXuat = chiTietDeXuat.TrangThaiDeXuat;
+                    data.SaveChanges();
+                    return RedirectToAction("XemChiTietDX", new { id = chiTietDeXuat.MaDeXuat });
+                }
+               
             }
             return View(chiTietDeXuat);
         }
