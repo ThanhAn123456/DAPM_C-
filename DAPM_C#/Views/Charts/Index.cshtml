@@ -1,0 +1,139 @@
+﻿@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .tableTT {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .tableTT th, .tableTT td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .tableTT th {
+            background-color: #f2f2f2;
+            color: black;
+            font-weight: bold;
+        }
+
+        .tableTT tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .tableTT tr:hover {
+            background-color: #ddd;
+        }
+
+        .tableTT th, .tableTT td {
+            padding: 12px 15px;
+        }
+</style>
+<h1>Thống Kê</h1>
+
+<div class="row">
+    <form method="post" asp-controller="ReportView" asp-action="PrintPDF">
+        <button type="submit" class="btn btn-primary">Export PDF</button>
+    </form>
+    <div class="col-md-8">
+        <select id="setyear" class="form-control" style="width:200px;height:50px">
+            <option value="0">Select year</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2024">2024</option>
+        </select>
+        <div>
+            <canvas id="chartProduct"></canvas>
+        </div>
+        <div class="col-md-4">
+            <table class="tableTT">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>TenSanPham</th>
+                        <th>SoLuongSanPham</th>
+                    </tr>
+                </thead>
+                <tbody id="load_data"></tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#setyear').on('change', function () {
+                var year = $(this).val();
+                if (year != "0") {
+                    $.get('/charts/getdatacharts?year=' + year, function (resp) {
+                        console.log(resp);
+                        updateChart(resp);
+                        load_data(resp);
+                    });
+                }
+            });
+
+            function updateChart(data) {
+                var labels = [];
+                var quantities = [];
+
+                $.each(data, function (index, item) {
+                    labels.push(item.tenLoaiSanPham);
+                    quantities.push(item.soLuongSanPham);
+                });
+
+                var ctx = document.getElementById("chartProduct").getContext('2d');
+                var barChartConfig = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Số Lượng Sản Phẩm',
+                            borderWidth: 1,
+                            backgroundColor: "rgba(117,193,129,0.8)",
+                            hoverBackgroundColor: "rgba(117,193,129,1)",
+                            data: quantities
+                        }
+                    ]
+                };
+
+                if (window.myBarChart) {
+                    window.myBarChart.destroy();
+                }
+
+                window.myBarChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartConfig,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            function load_data(data) {
+                var strHtml = "";
+                $.each(data, function (index, item) {
+                    strHtml += "<tr>";
+                    strHtml += "<td>" + (index + 1) + "</td>";
+                    strHtml += "<td>" + item.tenLoaiSanPham + "</td>";
+                    strHtml += "<td>" + item.soLuongSanPham + "</td>";
+                    strHtml += "</tr>";
+                });
+                $('#load_data').html(strHtml);
+            }
+        });
+    </script>
+}
