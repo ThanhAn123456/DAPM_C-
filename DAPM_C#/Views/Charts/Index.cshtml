@@ -2,6 +2,42 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h1>Thống Kê</h1>
+
+<div class="row">
+    <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
+        <select id="setyear" class="form-control" style="width:200px;height:50px">
+            <option value="0">Select year</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2024">2024</option>
+        </select>
+        <form method="post" asp-controller="ReportView" asp-action="PrintPDF">
+            <button type="submit" class="btn btn-primary" style="height:50px">Export PDF</button>
+        </form>
+    </div>
+    <div class="col-md-8">
+        <div>
+            <canvas id="chartProduct"></canvas>
+        </div>
+        <div class="col-md-4">
+            <table class="tableTT">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>TenSanPham</th>
+                        <th>SoLuongSanPham</th>
+                    </tr>
+                </thead>
+                <tbody id="load_data"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <style>
     .tableTT {
         width: 100%;
@@ -32,40 +68,20 @@
         .tableTT th, .tableTT td {
             padding: 12px 15px;
         }
+
+    .d-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
 </style>
-<h1>Thống Kê</h1>
-
-<div class="row">
-    <form method="post" asp-controller="ReportView" asp-action="PrintPDF">
-        <button type="submit" class="btn btn-primary">Export PDF</button>
-    </form>
-    <div class="col-md-8">
-        <select id="setyear" class="form-control" style="width:200px;height:50px">
-            <option value="0">Select year</option>
-            <option value="2019">2019</option>
-            <option value="2020">2020</option>
-            <option value="2021">2021</option>
-            <option value="2022">2022</option>
-            <option value="2024">2024</option>
-        </select>
-        <div>
-            <canvas id="chartProduct"></canvas>
-        </div>
-        <div class="col-md-4">
-            <table class="tableTT">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>TenSanPham</th>
-                        <th>SoLuongSanPham</th>
-                    </tr>
-                </thead>
-                <tbody id="load_data"></tbody>
-            </table>
-        </div>
-    </div>
-
-</div>
 
 @section scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
