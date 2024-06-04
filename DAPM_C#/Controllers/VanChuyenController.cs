@@ -75,7 +75,7 @@ namespace DAPM_C_.Controllers
               .Include(d => d.ChiTietDeXuats)
                    .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
                       .ThenInclude(cs => cs.MaDoiTuongNavigation)
-          .FirstOrDefaultAsync(m => m.MaDeXuat == id);
+          .FirstOrDefaultAsync(m => m.MaDeXuat == id);           
             if (deXuat == null)
             {
                 return NotFound();
