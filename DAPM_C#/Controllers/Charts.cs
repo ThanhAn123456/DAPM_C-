@@ -7,15 +7,9 @@ using Microsoft.Data.SqlClient;
 
 namespace DAPM_C_.Controllers
 {
-<<<<<<< HEAD
     public class Charts : Controller
     {
         private readonly string connectionString = "Data Source=NINH;Initial Catalog=quanlyphanphoikhoYody;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
-=======
-	public class Charts : Controller
-	{
-		private readonly string connectionString = "Data Source=NINH;Initial Catalog=quanlyphanphoikhoYody;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
->>>>>>> 344af623b2c4262711ac480cdf62c5e63231855a
 
         public IActionResult Index()
         {
