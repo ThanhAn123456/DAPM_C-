@@ -19,7 +19,17 @@ namespace DAPM_C_.Controllers
         }
         public async Task<IActionResult> Index(string searchdocs,string MaCuaHang, string TrangThai, int? pageNumber)
         {
-            IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation);
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation);
             if (!string.IsNullOrEmpty(searchdocs))
             {
                 quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.Tieude.Contains(searchdocs) || q.MaCuaHangNavigation.TenCuahang.Contains(searchdocs) || q.TrangThai.Contains(searchdocs));
@@ -54,7 +64,17 @@ namespace DAPM_C_.Controllers
         // xem chi tiet de xuat de duyet
         public async Task<IActionResult> XemChiTietDX(int? id)
         {
-            if (TempData["MessageError"] != null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (TempData["MessageError"] != null)
             {
                 ViewBag.errorMSG = TempData["MessageError"];
             }
@@ -91,7 +111,17 @@ namespace DAPM_C_.Controllers
         // Duyet chi tiet cua de xuat
         public async Task<IActionResult> DuyetDeXuat(int? id, int? maDX)
         {
-            if (id == null || maDX == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null || maDX == null)
             {
                 return NotFound();
             }

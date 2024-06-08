@@ -10,18 +10,18 @@ using X.PagedList;
 
 namespace DAPM_C_.Controllers
 {
-    public class SizesController : Controller
+    public class PhanQuyensController : Controller
     {
         private readonly QuanlyphanphoikhoYodyContext _context;
         private readonly IConfiguration _configuration;
 
-        public SizesController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
+        public PhanQuyensController(QuanlyphanphoikhoYodyContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
         }
 
-        // GET: Sizes
+        // GET: PhanQuyens
         public async Task<IActionResult> Index(string searchdocs, int? pageNumber)
         {
 			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
@@ -34,14 +34,14 @@ namespace DAPM_C_.Controllers
 				return Forbid();
 			}
 
-			IQueryable<Size> quanlyphanphoikhoYodyContext = _context.Sizes;
+			IQueryable<PhanQuyen> quanlyphanphoikhoYodyContext = _context.PhanQuyens;
 
             if (!string.IsNullOrEmpty(searchdocs))
             {
-                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(m => m.TenSize.Contains(searchdocs));
+                quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(p => p.TenQuyen.Contains(searchdocs));
             }
 
-            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(m => m.MaSize);
+            quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.OrderBy(p => p.MaQuyen);
 
             int pageSize = Convert.ToInt32(_configuration["PageList:PageSize"]);
             int currentPage = pageNumber ?? 1;
@@ -51,7 +51,7 @@ namespace DAPM_C_.Controllers
             return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
 
-        // GET: Sizes/Details/5
+        // GET: PhanQuyens/Details/5
         public async Task<IActionResult> Details(int? id)
         {
 			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
@@ -69,17 +69,17 @@ namespace DAPM_C_.Controllers
                 return NotFound();
             }
 
-            var size = await _context.Sizes
-                .FirstOrDefaultAsync(m => m.MaSize == id);
-            if (size == null)
+            var phanQuyen = await _context.PhanQuyens
+                .FirstOrDefaultAsync(m => m.MaQuyen == id);
+            if (phanQuyen == null)
             {
                 return NotFound();
             }
 
-            return View(size);
+            return View(phanQuyen);
         }
 
-        // GET: Sizes/Create
+        // GET: PhanQuyens/Create
         public IActionResult Create()
         {
 			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
@@ -95,23 +95,23 @@ namespace DAPM_C_.Controllers
 			return View();
         }
 
-        // POST: Sizes/Create
+        // POST: PhanQuyens/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaSize,TenSize")] Size size)
+        public async Task<IActionResult> Create([Bind("MaQuyen,TenQuyen")] PhanQuyen phanQuyen)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(size);
+                _context.Add(phanQuyen);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(size);
+            return View(phanQuyen);
         }
 
-        // GET: Sizes/Edit/5
+        // GET: PhanQuyens/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
 			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
@@ -129,22 +129,22 @@ namespace DAPM_C_.Controllers
                 return NotFound();
             }
 
-            var size = await _context.Sizes.FindAsync(id);
-            if (size == null)
+            var phanQuyen = await _context.PhanQuyens.FindAsync(id);
+            if (phanQuyen == null)
             {
                 return NotFound();
             }
-            return View(size);
+            return View(phanQuyen);
         }
 
-        // POST: Sizes/Edit/5
+        // POST: PhanQuyens/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaSize,TenSize")] Size size)
+        public async Task<IActionResult> Edit(int id, [Bind("MaQuyen,TenQuyen")] PhanQuyen phanQuyen)
         {
-            if (id != size.MaSize)
+            if (id != phanQuyen.MaQuyen)
             {
                 return NotFound();
             }
@@ -153,12 +153,12 @@ namespace DAPM_C_.Controllers
             {
                 try
                 {
-                    _context.Update(size);
+                    _context.Update(phanQuyen);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SizeExists(size.MaSize))
+                    if (!PhanQuyenExists(phanQuyen.MaQuyen))
                     {
                         return NotFound();
                     }
@@ -169,10 +169,10 @@ namespace DAPM_C_.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(size);
+            return View(phanQuyen);
         }
 
-        // GET: Sizes/Delete/5
+        // GET: PhanQuyens/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
 			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
@@ -190,34 +190,34 @@ namespace DAPM_C_.Controllers
                 return NotFound();
             }
 
-            var size = await _context.Sizes
-                .FirstOrDefaultAsync(m => m.MaSize == id);
-            if (size == null)
+            var phanQuyen = await _context.PhanQuyens
+                .FirstOrDefaultAsync(m => m.MaQuyen == id);
+            if (phanQuyen == null)
             {
                 return NotFound();
             }
 
-            return View(size);
+            return View(phanQuyen);
         }
 
-        // POST: Sizes/Delete/5
+        // POST: PhanQuyens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var size = await _context.Sizes.FindAsync(id);
-            if (size != null)
+            var phanQuyen = await _context.PhanQuyens.FindAsync(id);
+            if (phanQuyen != null)
             {
-                _context.Sizes.Remove(size);
+                _context.PhanQuyens.Remove(phanQuyen);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SizeExists(int id)
+        private bool PhanQuyenExists(int id)
         {
-            return _context.Sizes.Any(e => e.MaSize == id);
+            return _context.PhanQuyens.Any(e => e.MaQuyen == id);
         }
     }
 }
