@@ -71,7 +71,17 @@ namespace DAPM_C_.Controllers
 
         public async Task<IActionResult> SelectProduct(string searchdocs, string MaMau, string MaSize, string MaDoiTuong, int? pageNumber)
         {
-            IQueryable<ChiTietSanPham> quanlyphanphoikhoYodyContext = _context.ChiTietSanPhams.Include(c => c.MaDoiTuongNavigation).Include(c => c.MaLoaiSanPhamNavigation).Include(c => c.MaMauNavigation).Include(c => c.MaSanPhamNavigation).Include(c => c.MaSizeNavigation);
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1" && MaQuyen != "2")
+			{
+				return Forbid();
+			}
+
+			IQueryable<ChiTietSanPham> quanlyphanphoikhoYodyContext = _context.ChiTietSanPhams.Include(c => c.MaDoiTuongNavigation).Include(c => c.MaLoaiSanPhamNavigation).Include(c => c.MaMauNavigation).Include(c => c.MaSanPhamNavigation).Include(c => c.MaSizeNavigation);
 
             if (!string.IsNullOrEmpty(searchdocs))
             {
