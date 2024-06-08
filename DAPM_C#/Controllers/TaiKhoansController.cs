@@ -234,7 +234,8 @@ namespace DAPM_C_.Controllers
 				HttpContext.Session.SetString("MaTk", user.MaTk.ToString());
 				HttpContext.Session.SetString("HoTen", user.HoTen);
 				HttpContext.Session.SetString("MaQuyen", user.MaQuyen.ToString());
-				if (user.HinhAnh == null)
+                HttpContext.Session.SetString("MaCuaHang", user.MaCuaHang.ToString());
+                if (user.HinhAnh == null)
 				{
 					user.HinhAnh = "avatar_default.jpg";
 				}

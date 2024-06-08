@@ -21,7 +21,7 @@ namespace DAPM_C_.Controllers
        
         public async Task<IActionResult> Index(string searchdocs, string MaCuaHang, string TrangThai, int? pageNumber)
         {
-			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen");
 			if (MaQuyen == null)
 			{
 				return RedirectToAction("Login", "TaiKhoans");
@@ -65,8 +65,8 @@ namespace DAPM_C_.Controllers
         }
         public IActionResult Create()
         {
-			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
-			if (MaQuyen == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen");         
+            if (MaQuyen == null)
 			{
 				return RedirectToAction("Login", "TaiKhoans");
 			}
@@ -127,7 +127,7 @@ namespace DAPM_C_.Controllers
         // trang xem chi tiet de xuat
         public async Task<IActionResult> ChiTietDeXuat(int? id)
         {
-			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen");
 			if (MaQuyen == null)
 			{
 				return RedirectToAction("Login", "TaiKhoans");
@@ -170,7 +170,7 @@ namespace DAPM_C_.Controllers
         // details trang them chi tiet san pham
         public async Task<IActionResult> Details(int? id)
         {
-			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); 
 			if (MaQuyen == null)
 			{
 				return RedirectToAction("Login", "TaiKhoans");
@@ -217,7 +217,7 @@ namespace DAPM_C_.Controllers
         // thêm chi tiết sản phẩm
         public IActionResult AddChiTiet(int id)
         {
-			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); 
 			if (MaQuyen == null)
 			{
 				return RedirectToAction("Login", "TaiKhoans");
@@ -295,7 +295,7 @@ namespace DAPM_C_.Controllers
         // Edit chi tiet cua de xuat
         public async Task<IActionResult> Edit(int? id, int? maDX)
         {
-			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); 
 			if (MaQuyen == null)
 			{
 				return RedirectToAction("Login", "TaiKhoans");
@@ -337,7 +337,7 @@ namespace DAPM_C_.Controllers
         // xoa chi tiet de xuat
         public ActionResult Delete(int? MaDeXuat, int? MaChiTietSanPham)
         {
-			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); 
 			if (MaQuyen == null)
 			{
 				return RedirectToAction("Login", "TaiKhoans");
@@ -366,7 +366,7 @@ namespace DAPM_C_.Controllers
         // xem chi tiết đề xuất
         public async Task<IActionResult> DetailsCTDX(int MaDeXuat, int? MaChiTietSanPham)
         {
-			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); 
 			if (MaQuyen == null)
 			{
 				return RedirectToAction("Login", "TaiKhoans");

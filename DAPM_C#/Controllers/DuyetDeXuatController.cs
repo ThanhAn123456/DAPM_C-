@@ -157,7 +157,17 @@ namespace DAPM_C_.Controllers
                     return View(chiTietDeXuat);
                 }else
                 {
-                    ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(chiTietDeXuat.MaDeXuat, chiTietDeXuat.MaChiTietSanPham);
+					if (chiTietDeXuat.SoLuongDuyet <= 0 && chiTietDeXuat.TrangThaiDeXuat.Equals("CN"))
+                    {
+						ViewBag.MSG = "Số lượng duyệt <= 0 vui lòng chọn không duyệt!";
+						ViewBag.TrangThaiOptions = new SelectList(new List<SelectListItem>
+						{
+							new SelectListItem { Value = "CN", Text = "Duyệt" },
+							new SelectListItem { Value = "KD", Text = "Không duyệt" }
+						}, "Value", "Text");
+						return View(chiTietDeXuat);
+					}
+					ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(chiTietDeXuat.MaDeXuat, chiTietDeXuat.MaChiTietSanPham);
                     ctdx.LyDoDeXuat = chiTietDeXuat.LyDoDeXuat;
                     ctdx.SoLuongDeXuat = chiTietDeXuat.SoLuongDeXuat;
                     ctdx.SoLuongDuyet = chiTietDeXuat.SoLuongDuyet;
