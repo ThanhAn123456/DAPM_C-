@@ -9,7 +9,7 @@ namespace DAPM_C_.Controllers
 {
     public class Charts : Controller
     {
-        private readonly string connectionString = "Data Source=DESKTOP-0DSCUFU\\SQLEXPRESS;Initial Catalog=quanlyphanphoikhoYody;User ID=sa;Password=Tan0369463503@;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        private readonly string connectionString = "Data Source=NINH;Initial Catalog=quanLyPhanPhoiYody;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
 
         public IActionResult Index()
         {
