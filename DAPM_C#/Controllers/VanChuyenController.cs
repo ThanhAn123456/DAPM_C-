@@ -18,7 +18,17 @@ namespace DAPM_C_.Controllers
         }
         public async Task<IActionResult> Index(string searchdocs, string MaCuaHang, string TrangThai, int? pageNumber)
         {
-            IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation).Where(c => c.TrangThai !="Chờ duyệt");
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1" && MaQuyen != "3")
+			{
+				return Forbid();
+			}
+
+			IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation).Where(c => c.TrangThai !="Chờ duyệt");
             if (!string.IsNullOrEmpty(searchdocs))
             {
                 quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.Tieude.Contains(searchdocs) || q.MaCuaHangNavigation.TenCuahang.Contains(searchdocs) || q.TrangThai.Contains(searchdocs));
@@ -52,8 +62,18 @@ namespace DAPM_C_.Controllers
             return View(await quanlyphanphoikhoYodyContext.ToPagedListAsync(currentPage, pageSize));
         }
         public async Task<IActionResult> XemChiTietDX(int? id)
-        {          
-            if (id == null)
+        {
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1" && MaQuyen != "3")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -75,7 +95,7 @@ namespace DAPM_C_.Controllers
               .Include(d => d.ChiTietDeXuats)
                    .ThenInclude(cd => cd.MaChiTietSanPhamNavigation)
                       .ThenInclude(cs => cs.MaDoiTuongNavigation)
-          .FirstOrDefaultAsync(m => m.MaDeXuat == id);
+          .FirstOrDefaultAsync(m => m.MaDeXuat == id);           
             if (deXuat == null)
             {
                 return NotFound();

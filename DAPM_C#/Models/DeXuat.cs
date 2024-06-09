@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 namespace DAPM_C_.Models;
 
 public partial class DeXuat

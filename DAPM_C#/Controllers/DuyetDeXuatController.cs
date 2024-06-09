@@ -19,7 +19,17 @@ namespace DAPM_C_.Controllers
         }
         public async Task<IActionResult> Index(string searchdocs,string MaCuaHang, string TrangThai, int? pageNumber)
         {
-            IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation);
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			IQueryable<DeXuat> quanlyphanphoikhoYodyContext = _context.DeXuats.Include(c => c.ChiTietDeXuats).Include(c => c.MaCuaHangNavigation);
             if (!string.IsNullOrEmpty(searchdocs))
             {
                 quanlyphanphoikhoYodyContext = quanlyphanphoikhoYodyContext.Where(q => q.Tieude.Contains(searchdocs) || q.MaCuaHangNavigation.TenCuahang.Contains(searchdocs) || q.TrangThai.Contains(searchdocs));
@@ -54,7 +64,17 @@ namespace DAPM_C_.Controllers
         // xem chi tiet de xuat de duyet
         public async Task<IActionResult> XemChiTietDX(int? id)
         {
-            if (TempData["MessageError"] != null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (TempData["MessageError"] != null)
             {
                 ViewBag.errorMSG = TempData["MessageError"];
             }
@@ -91,7 +111,17 @@ namespace DAPM_C_.Controllers
         // Duyet chi tiet cua de xuat
         public async Task<IActionResult> DuyetDeXuat(int? id, int? maDX)
         {
-            if (id == null || maDX == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null || maDX == null)
             {
                 return NotFound();
             }
@@ -116,13 +146,36 @@ namespace DAPM_C_.Controllers
         {
             if (chiTietDeXuat != null)
             {
-                ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(chiTietDeXuat.MaDeXuat, chiTietDeXuat.MaChiTietSanPham);
-                ctdx.LyDoDeXuat = chiTietDeXuat.LyDoDeXuat;
-                ctdx.SoLuongDeXuat = chiTietDeXuat.SoLuongDeXuat;
-                ctdx.SoLuongDuyet = chiTietDeXuat.SoLuongDuyet;
-                ctdx.TrangThaiDeXuat = chiTietDeXuat.TrangThaiDeXuat;
-                data.SaveChanges();
-                return RedirectToAction("XemChiTietDX", new { id = chiTietDeXuat.MaDeXuat });
+                if (chiTietDeXuat.SoLuongDuyet > 0 && chiTietDeXuat.TrangThaiDeXuat.Equals("KD"))
+                {
+                    ViewBag.MSG = "Số lượng duyệt > 0 vui lòng chọn duyệt!";
+                    ViewBag.TrangThaiOptions = new SelectList(new List<SelectListItem>
+                        {
+                            new SelectListItem { Value = "CN", Text = "Duyệt" },
+                            new SelectListItem { Value = "KD", Text = "Không duyệt" }
+                        }, "Value", "Text");
+                    return View(chiTietDeXuat);
+                }else
+                {
+					if (chiTietDeXuat.SoLuongDuyet <= 0 && chiTietDeXuat.TrangThaiDeXuat.Equals("CN"))
+                    {
+						ViewBag.MSG = "Số lượng duyệt <= 0 vui lòng chọn không duyệt!";
+						ViewBag.TrangThaiOptions = new SelectList(new List<SelectListItem>
+						{
+							new SelectListItem { Value = "CN", Text = "Duyệt" },
+							new SelectListItem { Value = "KD", Text = "Không duyệt" }
+						}, "Value", "Text");
+						return View(chiTietDeXuat);
+					}
+					ChiTietDeXuat ctdx = data.ChiTietDeXuats.Find(chiTietDeXuat.MaDeXuat, chiTietDeXuat.MaChiTietSanPham);
+                    ctdx.LyDoDeXuat = chiTietDeXuat.LyDoDeXuat;
+                    ctdx.SoLuongDeXuat = chiTietDeXuat.SoLuongDeXuat;
+                    ctdx.SoLuongDuyet = chiTietDeXuat.SoLuongDuyet;
+                    ctdx.TrangThaiDeXuat = chiTietDeXuat.TrangThaiDeXuat;
+                    data.SaveChanges();
+                    return RedirectToAction("XemChiTietDX", new { id = chiTietDeXuat.MaDeXuat });
+                }
+               
             }
             return View(chiTietDeXuat);
         }

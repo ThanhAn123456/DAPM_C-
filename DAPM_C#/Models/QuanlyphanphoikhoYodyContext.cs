@@ -51,27 +51,25 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
     {
         modelBuilder.Entity<ChiTietDeXuat>(entity =>
         {
-            entity.HasKey(e => new { e.MaDeXuat, e.MaChiTietSanPham }).HasName("PK__ChiTietD__384F455EB1932616");
+            entity.HasKey(e => new { e.MaDeXuat, e.MaChiTietSanPham }).HasName("PK__ChiTietD__384F455EB36E68D0");
 
             entity.ToTable("ChiTietDeXuat");
 
             entity.Property(e => e.LyDoDeXuat).HasMaxLength(500);
             entity.Property(e => e.TrangThaiDeXuat).HasMaxLength(2);
-            entity.Property(e => e.TrangThaiVanChuyen).HasMaxLength(2);
-            entity.Property(e => e.XacNhanNhanHang).HasMaxLength(2);
 
             entity.HasOne(d => d.MaChiTietSanPhamNavigation).WithMany(p => p.ChiTietDeXuats)
                 .HasForeignKey(d => d.MaChiTietSanPham)
-                .HasConstraintName("FK__ChiTietDe__MaChi__19DFD96B");
+                .HasConstraintName("FK__ChiTietDe__MaChi__5629CD9C");
 
             entity.HasOne(d => d.MaDeXuatNavigation).WithMany(p => p.ChiTietDeXuats)
                 .HasForeignKey(d => d.MaDeXuat)
-                .HasConstraintName("FK__ChiTietDe__MaDeX__18EBB532");
+                .HasConstraintName("FK__ChiTietDe__MaDeX__5535A963");
         });
 
         modelBuilder.Entity<ChiTietPhieuNhap>(entity =>
         {
-            entity.HasKey(e => new { e.MaPhieuNhap, e.MaChiTietSanPham }).HasName("PK__ChiTietP__0E1BED0031FA3872");
+            entity.HasKey(e => new { e.MaPhieuNhap, e.MaChiTietSanPham }).HasName("PK__ChiTietP__0E1BED00CC80804C");
 
             entity.ToTable("ChiTietPhieuNhap", tb => tb.HasTrigger("UpdateSoLuong_CTPN"));
 
@@ -86,7 +84,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<ChiTietSanPham>(entity =>
         {
-            entity.HasKey(e => e.MaChiTietSanPham).HasName("PK__ChiTietS__A6B023B039FD33CF");
+            entity.HasKey(e => e.MaChiTietSanPham).HasName("PK__ChiTietS__A6B023B0CF1A6426");
 
             entity.ToTable("ChiTietSanPham");
 
@@ -126,7 +124,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<CuaHang>(entity =>
         {
-            entity.HasKey(e => e.MaCuaHang).HasName("PK__CuaHang__0840BCA69547DA47");
+            entity.HasKey(e => e.MaCuaHang).HasName("PK__CuaHang__0840BCA63978B85A");
 
             entity.ToTable("CuaHang");
 
@@ -136,9 +134,9 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<DeXuat>(entity =>
         {
-            entity.HasKey(e => e.MaDeXuat).HasName("PK__DeXuat__2224476541528D17");
+            entity.HasKey(e => e.MaDeXuat).HasName("PK__DeXuat__22244765C68E8DC0");
 
-            entity.ToTable("DeXuat");
+            entity.ToTable("DeXuat", tb => tb.HasTrigger("trg_UpdateSL"));
 
             entity.Property(e => e.NgayDeXuat).HasColumnType("datetime");
             entity.Property(e => e.Tieude).HasMaxLength(100);
@@ -147,12 +145,12 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
             entity.HasOne(d => d.MaCuaHangNavigation).WithMany(p => p.DeXuats)
                 .HasForeignKey(d => d.MaCuaHang)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__DeXuat__MaCuaHan__160F4887");
+                .HasConstraintName("FK__DeXuat__MaCuaHan__52593CB8");
         });
 
         modelBuilder.Entity<DoiTuong>(entity =>
         {
-            entity.HasKey(e => e.MaDoiTuong).HasName("PK__DoiTuong__291408A1DD5192D8");
+            entity.HasKey(e => e.MaDoiTuong).HasName("PK__DoiTuong__291408A18E852460");
 
             entity.ToTable("DoiTuong");
 
@@ -161,7 +159,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<LoaiSanPham>(entity =>
         {
-            entity.HasKey(e => e.MaLoaiSanPham).HasName("PK__LoaiSanP__ECCF699F67C28685");
+            entity.HasKey(e => e.MaLoaiSanPham).HasName("PK__LoaiSanP__ECCF699F0FD9DE29");
 
             entity.ToTable("LoaiSanPham");
 
@@ -170,7 +168,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<Mau>(entity =>
         {
-            entity.HasKey(e => e.MaMau).HasName("PK__Mau__3A5BBB7D93004EC2");
+            entity.HasKey(e => e.MaMau).HasName("PK__Mau__3A5BBB7D8ACA7527");
 
             entity.ToTable("Mau");
 
@@ -179,7 +177,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<NhaCungCap>(entity =>
         {
-            entity.HasKey(e => e.MaNcc).HasName("PK__NhaCungC__3A185DEB48E8255C");
+            entity.HasKey(e => e.MaNcc).HasName("PK__NhaCungC__3A185DEB116E60CA");
 
             entity.ToTable("NhaCungCap");
 
@@ -198,7 +196,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<PhanQuyen>(entity =>
         {
-            entity.HasKey(e => e.MaQuyen).HasName("PK__PhanQuye__1D4B7ED4FF667E0B");
+            entity.HasKey(e => e.MaQuyen).HasName("PK__PhanQuye__1D4B7ED4A6863902");
 
             entity.ToTable("PhanQuyen");
 
@@ -207,7 +205,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<PhieuNhap>(entity =>
         {
-            entity.HasKey(e => e.MaPhieuNhap).HasName("PK__PhieuNha__1470EF3B1A340B54");
+            entity.HasKey(e => e.MaPhieuNhap).HasName("PK__PhieuNha__1470EF3B80050B5A");
 
             entity.ToTable("PhieuNhap");
 
@@ -222,7 +220,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<Sanpham>(entity =>
         {
-            entity.HasKey(e => e.MaSanPham).HasName("PK__Sanpham__FAC7442DAE275762");
+            entity.HasKey(e => e.MaSanPham).HasName("PK__Sanpham__FAC7442D5313EF27");
 
             entity.ToTable("Sanpham");
 
@@ -231,7 +229,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<Size>(entity =>
         {
-            entity.HasKey(e => e.MaSize).HasName("PK__Size__A787E7ED913F5A26");
+            entity.HasKey(e => e.MaSize).HasName("PK__Size__A787E7ED3EA9ECC5");
 
             entity.ToTable("Size");
 
@@ -242,7 +240,7 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
 
         modelBuilder.Entity<TaiKhoan>(entity =>
         {
-            entity.HasKey(e => e.MaTk).HasName("PK__TaiKhoan__2725007045AEBE7C");
+            entity.HasKey(e => e.MaTk).HasName("PK__TaiKhoan__27250070733475E8");
 
             entity.ToTable("TaiKhoan");
 
@@ -275,12 +273,12 @@ public partial class QuanlyphanphoikhoYodyContext : DbContext
             entity.HasOne(d => d.MaCuaHangNavigation).WithMany(p => p.TaiKhoans)
                 .HasForeignKey(d => d.MaCuaHang)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__TaiKhoan__MaCuaH__787EE5A0");
+                .HasConstraintName("FK__TaiKhoan__MaCuaH__5BE2A6F2");
 
             entity.HasOne(d => d.MaQuyenNavigation).WithMany(p => p.TaiKhoans)
                 .HasForeignKey(d => d.MaQuyen)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK__TaiKhoan__MaQuye__778AC167");
+                .HasConstraintName("FK__TaiKhoan__MaQuye__5AEE82B9");
         });
 
         OnModelCreatingPartial(modelBuilder);
