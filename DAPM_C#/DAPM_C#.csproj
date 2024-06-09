@@ -9,6 +9,9 @@
 
   <ItemGroup>
     <PackageReference Include="iTextSharp.LGPLv2.Core" Version="3.4.20" />
+
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.4">
       <PrivateAssets>all</PrivateAssets>
@@ -33,10 +36,6 @@
     <None Include="wwwroot\scss\bootstrap\.DS_Store" />
     <None Include="wwwroot\scss\bootstrap\scss\.DS_Store" />
     <None Include="wwwroot\scss\bootstrap\scss\tests\.DS_Store" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\hinhanhs\" />
   </ItemGroup>
 
 </Project>

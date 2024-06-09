@@ -31,7 +31,17 @@ namespace DAPM_C_.Controllers
         // GET: ChiTietSanPhams
         public async Task<IActionResult> Index(string searchdocs, string MaMau, string MaSize, string MaDoiTuong, int? pageNumber)
         {
-            IQueryable<ChiTietSanPham> quanlyphanphoikhoYodyContext = _context.ChiTietSanPhams.Include(c => c.MaDoiTuongNavigation).Include(c => c.MaLoaiSanPhamNavigation).Include(c => c.MaMauNavigation).Include(c => c.MaSanPhamNavigation).Include(c => c.MaSizeNavigation);
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			IQueryable<ChiTietSanPham> quanlyphanphoikhoYodyContext = _context.ChiTietSanPhams.Include(c => c.MaDoiTuongNavigation).Include(c => c.MaLoaiSanPhamNavigation).Include(c => c.MaMauNavigation).Include(c => c.MaSanPhamNavigation).Include(c => c.MaSizeNavigation);
 
             if (!string.IsNullOrEmpty(searchdocs))
             {
@@ -71,7 +81,17 @@ namespace DAPM_C_.Controllers
 
         public async Task<IActionResult> SelectProduct(string searchdocs, string MaMau, string MaSize, string MaDoiTuong, int? pageNumber)
         {
-            IQueryable<ChiTietSanPham> quanlyphanphoikhoYodyContext = _context.ChiTietSanPhams.Include(c => c.MaDoiTuongNavigation).Include(c => c.MaLoaiSanPhamNavigation).Include(c => c.MaMauNavigation).Include(c => c.MaSanPhamNavigation).Include(c => c.MaSizeNavigation);
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1" && MaQuyen != "2")
+			{
+				return Forbid();
+			}
+
+			IQueryable<ChiTietSanPham> quanlyphanphoikhoYodyContext = _context.ChiTietSanPhams.Include(c => c.MaDoiTuongNavigation).Include(c => c.MaLoaiSanPhamNavigation).Include(c => c.MaMauNavigation).Include(c => c.MaSanPhamNavigation).Include(c => c.MaSizeNavigation);
 
             if (!string.IsNullOrEmpty(searchdocs))
             {
@@ -122,7 +142,17 @@ namespace DAPM_C_.Controllers
         // GET: ChiTietSanPhams/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -145,7 +175,17 @@ namespace DAPM_C_.Controllers
         // GET: ChiTietSanPhams/Create
         public IActionResult Create()
         {
-            ViewData["MaDoiTuong"] = new SelectList(_context.DoiTuongs, "MaDoiTuong", "TenDoiTuong");
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			ViewData["MaDoiTuong"] = new SelectList(_context.DoiTuongs, "MaDoiTuong", "TenDoiTuong");
             ViewData["MaLoaiSanPham"] = new SelectList(_context.LoaiSanPhams, "MaLoaiSanPham", "TenLoaiSanPham");
             ViewData["MaMau"] = new SelectList(_context.Maus, "MaMau", "TenMau");
             ViewData["MaSanPham"] = new SelectList(_context.Sanphams, "MaSanPham", "TenSanPham");
@@ -189,7 +229,17 @@ namespace DAPM_C_.Controllers
         // GET: ChiTietSanPhams/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
@@ -273,7 +323,17 @@ namespace DAPM_C_.Controllers
         // GET: ChiTietSanPhams/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+			if (MaQuyen != "1")
+			{
+				return Forbid();
+			}
+
+			if (id == null)
             {
                 return NotFound();
             }
