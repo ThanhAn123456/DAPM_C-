@@ -51,9 +51,9 @@
                 @Html.DisplayFor(modelItem => item.DiaChi)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MaCuaHang">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MaCuaHang">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MaCuaHang">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.MaCuaHang" class="btn btn-outline-primary">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.MaCuaHang" class="btn btn-outline-info">Details</a> 
+                    <a asp-action="Delete" asp-route-id="@item.MaCuaHang" class="btn btn-outline-danger">Delete</a>
             </td>
         </tr>
 }

@@ -8,13 +8,13 @@
 <h1>DANH SÁCH ĐỀ XUẤT</h1>
 
 <div style="display: flex; justify-content: center; align-items: center; padding: 16px; background-color: #f8f9fa; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-    <form method="get" class="docs-search-form row gx-3 align-items-center" asp-action="Index" style="margin: 0; width: 100%; max-width: 800px;">
+    <form method="get" class="docs-search-form row gx-3 align-items-center" asp-action="Index" style="display: flex; align-items: center; justify-content: space-between; margin: 0; width: 100%; max-width: 1000px; gap: 10px;">
 
         <div class="col-auto" style="flex-grow: 1;">
             <input type="text" id="search-docs" name="searchdocs" value="@ViewData["CurrentSearchDocs"]" class="form-control search-docs" placeholder="Tìm kiếm..." style="width: 100%; padding: 8px 12px; border-radius: 4px; border: 1px solid #ced4da;">
         </div>
-        <div class="col-auto">      
-            <select class="form-select w-auto" name="MaCuaHang">
+        <div class="col-auto">
+            <select class="form-select w-auto" name="MaCuaHang" style="width: auto;">
                 <option value="">Chọn cửa hàng</option>
                 @foreach (var item in ViewBag.ListCuaHang as SelectList)
                 {
@@ -30,7 +30,7 @@
             </select>
         </div>
         <div class="col-auto">
-            <select class="form-select w-auto" name="TrangThai">
+            <select class="form-select w-auto" name="TrangThai" style="width: auto;">
                 <option value="">Trạng thái</option>
                 @foreach (var item in ViewBag.ListTrangThai as SelectList)
                 {
@@ -43,10 +43,10 @@
                         <option value="@item.Value">@item.Text</option>
                     }
                 }
-            </select>          
+            </select>
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn app-btn-secondary" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Tìm kiếm</button>
+            <button type="submit" class="btn app-btn-secondary" style="padding: 8px 5px; background-color: #007bff; color: white; border: none; border-radius: 4px;">Tìm kiếm</button>
         </div>
     </form>
 </div>

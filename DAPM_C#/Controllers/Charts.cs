@@ -25,7 +25,7 @@ namespace DAPM_C_.Controllers
                             LEFT JOIN ChiTietDeXuat ctdx ON ctsp.MaChiTietSanPham = ctdx.MaChiTietSanPham
                             LEFT JOIN DeXuat dx ON ctdx.MaDeXuat = dx.MaDeXuat
                             WHERE YEAR(dx.NgayDeXuat) = @Nam
-                            AND dx.TrangThai = N'Đã duyệt'
+                            AND dx.TrangThai = N'Đã vận chuyển'
                             GROUP BY lsp.TenLoaiSanPham; ";
 
             var data = new List<object>();

@@ -221,7 +221,7 @@ namespace DAPM_C_.Controllers
             ViewData["MaDoiTuong"] = new SelectList(_context.DoiTuongs, "MaDoiTuong", "TenDoiTuong", chiTietSanPham.MaDoiTuong);
             ViewData["MaLoaiSanPham"] = new SelectList(_context.LoaiSanPhams, "MaLoaiSanPham", "TenLoaiSanPham", chiTietSanPham.MaLoaiSanPham);
             ViewData["MaMau"] = new SelectList(_context.Maus, "MaMau", "TenMau", chiTietSanPham.MaMau);
-            ViewData["MaSanPham"] = new SelectList(_context.Sanphams, "TenSanPham", "MaSanPham", chiTietSanPham.MaSanPham);
+            ViewData["MaSanPham"] = new SelectList(_context.Sanphams, "MaSanPham", "TenSanPham", chiTietSanPham.MaSanPham);
             ViewData["MaSize"] = new SelectList(_context.Sizes, "MaSize", "TenSize", chiTietSanPham.MaSize);
             return View(chiTietSanPham);
         }
