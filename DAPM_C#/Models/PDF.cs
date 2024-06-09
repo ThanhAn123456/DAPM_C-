@@ -22,11 +22,14 @@ namespace DAPM_C_.Models
         public PDF(IWebHostEnvironment oHostEnvironment)
         {
             _oHostEnvironment = oHostEnvironment;
-            _fontStyle = FontFactory.GetFont("Arial", 8f, 1);
-            _fontStyleBold = FontFactory.GetFont("Arial", 9f, 1);
+            string fontPath = Path.Combine(_oHostEnvironment.WebRootPath, "fonts", "arial.ttf");
+            BaseFont bfArial = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            _fontStyle = new Font(bfArial, 8f, Font.NORMAL);
+            _fontStyleBold = new Font(bfArial, 9f, Font.BOLD);
+
             _pdfTable = new PdfPTable(_maxColum) { WidthPercentage = 100, HorizontalAlignment = Element.ALIGN_LEFT };
             _memoryStream = new MemoryStream();
-            
+
         }
 
         public byte[] Report<T>(List<T> isanpham, 
@@ -69,7 +72,7 @@ namespace DAPM_C_.Models
         {
             for (int i = 0; i < count; i++)
             {
-                var cell = new PdfPCell(new Phrase("Báo cáo", _fontStyle))
+                var cell = new PdfPCell(new Phrase("", _fontStyle))
                 {
                     Colspan = _maxColum,
                     Border = 0,

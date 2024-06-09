@@ -10,7 +10,7 @@ namespace DAPM_C_.Controllers
     {
         private readonly QuanlyphanphoikhoYodyContext _context;
         private readonly IWebHostEnvironment _oHostEnvironment;
-        private readonly string connectionString = "Data Source=NINH;Initial Catalog=quanlyphanphoikhoYody;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+        private readonly string connectionString = "Data Source=DESKTOP-0DSCUFU\\SQLEXPRESS;Initial Catalog=quanlyphanphoikhoYody;User ID=sa;Password=Tan0369463503@;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
         public ReportView(QuanlyphanphoikhoYodyContext context, IWebHostEnvironment oHostEnvironment)
         {
@@ -32,7 +32,7 @@ namespace DAPM_C_.Controllers
                 var isanphams = await GetDataCharts(year);
                 PDF rpt = new PDF(_oHostEnvironment);
                 byte[] pdfData = rpt.Report<ProductWithQuantity>(
-                    isanphams, new List<string>() { "Tên sản phẩm", "Số lượng" }, "Thống kê số lượng sản phẩm");
+                    isanphams, new List<string>() { "Loại sản phẩm", "Số Lượng" }, "Thống kê theo loại sản phẩm năm 2024");
                 Console.OutputEncoding = Encoding.UTF8;
                 Console.InputEncoding = Encoding.UTF8;
                 return File(pdfData, "application/pdf");
@@ -60,13 +60,13 @@ namespace DAPM_C_.Controllers
 
         public async Task<List<ProductWithQuantity>> GetDataCharts(int year)
         {
-            var query = @"SELECT lsp.TenLoaiSanPham, SUM(ctsp.Soluong) AS SoLuongSanPham 
+            var query = @"SELECT lsp.TenLoaiSanPham, SUM(ctdx.SoLuongDuyet) AS SoLuongSanPham 
                             FROM LoaiSanPham lsp
                             LEFT JOIN ChiTietSanPham ctsp ON lsp.MaLoaiSanPham = ctsp.MaLoaiSanPham
                             LEFT JOIN ChiTietDeXuat ctdx ON ctsp.MaChiTietSanPham = ctdx.MaChiTietSanPham
                             LEFT JOIN DeXuat dx ON ctdx.MaDeXuat = dx.MaDeXuat
                             WHERE YEAR(dx.NgayDeXuat) = @Nam
-                            AND ctdx.XacNhanNhanHang = 'ht'
+                            AND dx.TrangThai = N'Đã duyệt'
                             GROUP BY lsp.TenLoaiSanPham; ";
 
             var data = new List<ProductWithQuantity>();
