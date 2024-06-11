@@ -15,7 +15,13 @@ namespace DAPM_C_.Controllers
 
         public IActionResult Index()
         {
-            return View();
+			var MaQuyen = HttpContext.Session.GetString("MaQuyen"); ;
+			if (MaQuyen == null)
+			{
+				return RedirectToAction("Login", "TaiKhoans");
+			}
+
+			return View();
         }
 
         public IActionResult Privacy()

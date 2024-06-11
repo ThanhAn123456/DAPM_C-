@@ -1,0 +1,215 @@
+﻿@model IPagedList<DAPM_C_.Models.ChiTietSanPham>
+@using X.PagedList;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <p>
+        <a asp-action="Create" class="btn btn-outline-success">Create New</a>
+    </p>
+    <form class="docs-search-form row gx-1 align-items-center" asp-action="Index" style="margin: 0px 0px 16px 0px;">
+
+        <div class="col-auto">
+            <input type="text" id="search-docs" name="searchdocs" value="@ViewData["CurrentSearchDocs"]" class="form-control search-docs" placeholder="search">
+        </div>
+        <div class="col-auto">
+            <select class="form-select w-auto" name="MaMau">
+                <option value="">-- All --</option>
+                @foreach (var item in ViewBag.MaMauList as SelectList)
+                {
+                    @if (item.Value == ViewBag.CurrentMaMau)
+                    {
+                                <option selected="" value="@item.Value">@item.Text</option>
+                    }
+                    else
+                    {
+                                <option value="@item.Value">@item.Text</option>
+                    }	
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <select class="form-select w-auto" name="MaSize">
+                <option value="">-- All --</option>
+                @foreach (var item in ViewBag.MaSizeList as SelectList)
+                {
+                    @if (item.Value == ViewBag.CurrentMaSize)
+                    {
+                                <option selected="" value="@item.Value">@item.Text</option>
+                    }
+                    else
+                    {
+                                <option value="@item.Value">@item.Text</option>
+                    }	
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <select class="form-select w-auto" name="MaDoiTuong">
+                <option value="">-- All --</option>
+                @foreach (var item in ViewBag.MaDoiTuongList as SelectList)
+                {
+                    @if (item.Value == ViewBag.CurrentMaDoiTuong)
+                    {
+                                <option selected="" value="@item.Value">@item.Text</option>
+                    }
+                    else
+                    {
+                                <option value="@item.Value">@item.Text</option>
+                    }	
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn app-btn-secondary">Tìm kiếm</button>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().MaChiTietSanPham)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().SoLuong)
+            </th>
+            @* <th>
+                @Html.DisplayNameFor(model => model.HinhAnh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nsx)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChatLieu)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().GiaTien)
+            </th>
+            @* <th>
+                @Html.DisplayNameFor(model => model.MaDoiTuongNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaLoaiSanPhamNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaMauNavigation)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().MaSanPhamNavigation)
+            </th>
+            @* <th>
+                @Html.DisplayNameFor(model => model.MaSizeNavigation)
+            </th> *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaChiTietSanPham)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.HinhAnh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nsx)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChatLieu)
+            </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.GiaTien)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.MaDoiTuongNavigation.MaDoiTuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaLoaiSanPhamNavigation.MaLoaiSanPham)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaMauNavigation.MaMau)
+            </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.MaSanPhamNavigation.TenSanPham)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.MaSizeNavigation.MaSize)
+            </td> *@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MaChiTietSanPham" class="btn btn-outline-primary">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.MaChiTietSanPham" class="btn btn-outline-info">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.MaChiTietSanPham" class="btn btn-outline-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<nav class="app-pagination mt-5">
+    <ul class="pagination justify-content-center">
+        @if (Model.HasPreviousPage)
+        {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)" 
+                            asp-route-searchdocs="@ViewData["CurrentSearchDocs"]"
+                            asp-route-MaMau="@ViewData["CurrentMaMau"]"
+                            asp-route-MaSize="@ViewData["CurrentMaSize"]"
+                            asp-route-MaDoiTuong="@ViewData["CurrentMaDoiTuong"]">Previous</a>
+                        </li>
+        }
+        else
+        {
+                        <li class="page-item disabled">
+                            <a class="page-link">Previous</a>
+                        </li>
+        }
+
+        @for (var i = 1; i <= Model.PageCount; i++)
+        {
+            if (i == Model.PageNumber)
+            {
+                                        <li class="page-item active">
+                                            <a class="page-link">@i</a>
+                                        </li>
+            }
+            else
+            {
+                                        <li class="page-item">
+                                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" 
+                                            asp-route-searchdocs="@ViewData["CurrentSearchDocs"]"
+                                            asp-route-MaMau="@ViewData["CurrentMaMau"]"
+                                            asp-route-MaSize="@ViewData["CurrentMaSize"]"
+                                            asp-route-MaDoiTuong="@ViewData["CurrentMaDoiTuong"]">@i</a>
+                                        </li>
+            }
+        }
+
+        @if (Model.HasNextPage)
+        {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)" 
+                            asp-route-searchdocs="@ViewData["CurrentSearchDocs"]"
+                            asp-route-MaMau="@ViewData["CurrentMaMau"]"
+                            asp-route-MaSize="@ViewData["CurrentMaSize"]"
+                            asp-route-MaDoiTuong="@ViewData["CurrentMaDoiTuong"]">Next</a>
+                        </li>
+        }
+        else
+        {
+                        <li class="page-item disabled">
+                            <a class="page-link">Next</a>
+                        </li>
+        }
+    </ul>
+</nav><!--//app-pagination-->

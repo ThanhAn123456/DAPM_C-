@@ -1,0 +1,72 @@
+﻿@model DAPM_C_.Models.ChiTietDeXuat
+
+@{
+    ViewData["Title"] = "DetailsCTDX";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>DetailsCTDX</h1>
+
+<div>
+    <h4>ChiTietDeXuat</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Sản phẩm
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaSanPhamNavigation.TenSanPham)
+        </dd>
+        <dt class="col-sm-2">
+            Size
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaSizeNavigation.TenSize)
+        </dd>
+        <dt class="col-sm-2">
+            Màu
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaMauNavigation.TenMau)
+        </dd>
+        <dt class="col-sm-2">
+            Loại
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaLoaiSanPhamNavigation.TenLoaiSanPham)
+        </dd>
+        <dt class="col-sm-2">
+            Đối tượng
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MaChiTietSanPhamNavigation.MaDoiTuongNavigation.TenDoiTuong)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LyDoDeXuat)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LyDoDeXuat)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoLuongDeXuat)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoLuongDeXuat)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TrangThaiDeXuat)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TrangThaiDeXuat)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoLuongDuyet)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoLuongDuyet)
+        </dd>            
+    </dl>
+</div>
+<div>
+    <a asp-action="ChiTietDeXuat" asp-route-id="@Model.MaDeXuat">Back to list</a>
+</div>

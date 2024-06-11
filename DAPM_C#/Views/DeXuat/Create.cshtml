@@ -1,0 +1,49 @@
+﻿@model DAPM_C_.Models.DeXuat
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var MaCuaHangSS = Context.Session.GetString("MaCuaHang");
+    int mch = Convert.ToInt16(MaCuaHangSS);
+}
+<h1>TẠO ĐỀ XUẤT</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Tieude" class="control-label">Tiêu đề</label>
+                <input asp-for="Tieude" class="form-control" />
+                <span asp-validation-for="Tieude" class="text-danger"></span>
+            </div> 
+            @if (MaCuaHangSS != null)
+            {
+                @if (MaCuaHangSS == "3")
+                {
+                    <div class="form-group">
+                        <label asp-for="MaCuaHang" class="control-label">Cửa hàng</label>
+                        <select asp-for="MaCuaHang" class="form-control" asp-items="ViewBag.CuaHangList"></select>
+                    </div>
+                }
+                else
+                {
+                    <input asp-for="MaCuaHang" type="hidden" class="form-control" value="@mch" readonly="readonly" />
+                }
+            }                           
+            <input asp-for="TrangThai" type="hidden" value="Chờ Duyệt"/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+ 
